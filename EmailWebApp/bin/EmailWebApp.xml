@@ -1,0 +1,1155 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EmailWebApp</name>
+    </assembly>
+    <members>
+        <member name="F:EmailWebApp.AdminClient.form1">
+            <summary>
+            form1 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AdminClient.btnNavLogout">
+            <summary>
+            btnNavLogout control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AdminClient.hmAccountClientModal">
+            <summary>
+            hmAccountClientModal control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AdminClient.svgAvatar">
+            <summary>
+            svgAvatar control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AdminClient.lblNavUserName">
+            <summary>
+            lblNavUserName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AdminClient.emailList">
+            <summary>
+            emailList control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AdminClient.btnBan">
+            <summary>
+            btnBan control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AdminClient.btnUnBan">
+            <summary>
+            btnUnBan control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AdminClient.gvAccounts">
+            <summary>
+            gvAccounts control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AdminClient.gvFlaggedEmails">
+            <summary>
+            gvFlaggedEmails control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="M:EmailWebApp.ForgotPassword.btnCheckQuestions_Click(System.Object,System.EventArgs)">
+            <summary>
+            Check whether all responses have been provided and call the SecurityQuestions WebMethod.
+            If provided the correct number of responses show the "New Password" card on the page. 
+            Otherwise alert the user check incorrect responses.
+            </summary>
+        </member>
+        <member name="M:EmailWebApp.ForgotPassword.btnSaveNewPassword_Click(System.Object,System.EventArgs)">
+            <summary>
+            Check whether the new password/password confirm match and call the UpdatePassword WebMethod.
+            If the update was successful redirect to the Login page. 
+            Otherwise alert the user to contact the "HelpDesk".
+            </summary>
+        </member>
+        <member name="F:EmailWebApp.ForgotPassword.form1">
+            <summary>
+            form1 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.ForgotPassword.btnLogin">
+            <summary>
+            btnLogin control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.ForgotPassword.btnCreateAccount">
+            <summary>
+            btnCreateAccount control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.ForgotPassword.hmForgotPassModal">
+            <summary>
+            hmForgotPassModal control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.ForgotPassword.svgAvatar">
+            <summary>
+            svgAvatar control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.ForgotPassword.lblUserName">
+            <summary>
+            lblUserName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.ForgotPassword.securityCard">
+            <summary>
+            securityCard control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.ForgotPassword.txtEmailAddress">
+            <summary>
+            txtEmailAddress control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.ForgotPassword.lblQuestionCity">
+            <summary>
+            lblQuestionCity control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.ForgotPassword.txtResponseCity">
+            <summary>
+            txtResponseCity control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.ForgotPassword.lblQuestionPhone">
+            <summary>
+            lblQuestionPhone control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.ForgotPassword.txtResponsePhone">
+            <summary>
+            txtResponsePhone control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.ForgotPassword.lblQuestionSchool">
+            <summary>
+            lblQuestionSchool control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.ForgotPassword.txtResponseSchool">
+            <summary>
+            txtResponseSchool control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.ForgotPassword.btnCheckQuestions">
+            <summary>
+            btnCheckQuestions control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.ForgotPassword.newPasswordCard">
+            <summary>
+            newPasswordCard control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.ForgotPassword.txtNewPassword">
+            <summary>
+            txtNewPassword control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.ForgotPassword.txtPasswordConfirm">
+            <summary>
+            txtPasswordConfirm control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.ForgotPassword.btnSaveNewPassword">
+            <summary>
+            btnSaveNewPassword control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="M:EmailWebApp.Login.LogIn(System.String,System.Byte[])">
+            <summary>
+            Call Account.LogIn() to verify the login credentials.
+            If the account is banned/inactive alert the user. 
+            Otherwise store the encrypted credentials in a cookie when remember me is checked.
+            Redirect to either the Account or Admin pages based on the AccountRoleType
+            </summary>
+        </member>
+        <member name="M:EmailWebApp.Login.UpdateSession">
+            <summary>
+            Store the logged in user Account object in the Session to be available for any other page
+            </summary>
+        </member>
+        <member name="M:EmailWebApp.Login.CreateCookie(System.String,System.Byte[])">
+            <summary>
+            Write the encrypted password to a cookie if remember me is checked. 
+            The user will either login manually or the cookie will be used to login.
+            </summary>
+            <param name="theCreatedEmailAddress"></param>
+            <param name="theAccountPassword"></param>
+        </member>
+        <member name="F:EmailWebApp.Login.form1">
+            <summary>
+            form1 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.Login.btnLogin">
+            <summary>
+            btnLogin control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.Login.btnForgotPassword">
+            <summary>
+            btnForgotPassword control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.Login.btnCreateAccount">
+            <summary>
+            btnCreateAccount control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.Login.hmLoginModal">
+            <summary>
+            hmLoginModal control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.Login.svgAvatar">
+            <summary>
+            svgAvatar control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.Login.lblUserName">
+            <summary>
+            lblUserName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.Login.txtEmail">
+            <summary>
+            txtEmail control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.Login.txtPass">
+            <summary>
+            txtPass control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.Login.chkRemember">
+            <summary>
+            chkRemember control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.Login.btnSignIn">
+            <summary>
+            btnSignIn control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.Login.btnCreateAcct">
+            <summary>
+            btnCreateAcct control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.Login.lnkForgotPassword">
+            <summary>
+            lnkForgotPassword control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.CreateAcct.form1">
+            <summary>
+            form1 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.CreateAcct.btnNavLogIn">
+            <summary>
+            btnNavLogIn control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.CreateAcct.btnNavCreateAccount">
+            <summary>
+            btnNavCreateAccount control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.CreateAcct.mcCreateAcctModal">
+            <summary>
+            mcCreateAcctModal control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.CreateAcct.svgAvatar">
+            <summary>
+            svgAvatar control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.CreateAcct.lblUserName">
+            <summary>
+            lblUserName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.CreateAcct.lblTopMessage">
+            <summary>
+            lblTopMessage control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.CreateAcct.txtUserName">
+            <summary>
+            txtUserName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.CreateAcct.imgAvatar">
+            <summary>
+            imgAvatar control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.CreateAcct.ddlAvatar">
+            <summary>
+            ddlAvatar control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.CreateAcct.txtAddress">
+            <summary>
+            txtAddress control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.CreateAcct.txtPhoneNumber">
+            <summary>
+            txtPhoneNumber control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.CreateAcct.txtEmail">
+            <summary>
+            txtEmail control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.CreateAcct.txtEmailSecurity">
+            <summary>
+            txtEmailSecurity control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.CreateAcct.txtPassword">
+            <summary>
+            txtPassword control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.CreateAcct.txtPasswordConfirm">
+            <summary>
+            txtPasswordConfirm control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.CreateAcct.txtSecQuestionCity">
+            <summary>
+            txtSecQuestionCity control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.CreateAcct.txtSecQuestionPhone">
+            <summary>
+            txtSecQuestionPhone control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.CreateAcct.txtSecQuestionSchool">
+            <summary>
+            txtSecQuestionSchool control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.CreateAcct.rblUserType">
+            <summary>
+            rblUserType control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.CreateAcct.btnCreateAccount">
+            <summary>
+            btnCreateAccount control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.CreateAcct.btnLogIn">
+            <summary>
+            btnLogIn control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:EmailWebApp.AccountClient">
+             <summary>
+             
+             Overall the EmailWebApp provides the 2 types of accounts;
+             1. An Account type provides access to email functions; send/recv email, organize email, etc...
+             2. An Administrator type makes sure content is safe from scams, suspected illegality, etc...
+             
+             The AccountClient page facilitates access to email. 
+            
+             Page layout includes the following;
+            
+             - NavBar at the top
+             - a SideBar containing LinkButtons with OnClick events to select email organized by Tags
+             - MainContent switches visibility of 4 different types of content 
+                 - EmailList content including a row of controls to interact with emails
+                 - CreateEmail to create and and send an email
+                 - SelectEmail to view the detail of a selected email
+                 - SearchEamil lists results of a text search
+             
+             The state of several data bound controls is maintained by .NET including...
+             GridView gvEmail presents email content and PostBack events to interact with email items
+             DropDownList ddlMoveTo updates the EmailReceipt.TagId in the SelectedIndexChanged event
+             DropDownList ddlCustomTags is a side-bar feature to view email of a given user defined TagName
+             
+             The state of dynamic content is maintained in the server-side code behind such as...
+             A DropDownList for email sent to multiple accounts. This DDL must be re-created every roundtrip
+             
+             </summary>
+        </member>
+        <member name="M:EmailWebApp.AccountClient.gvEmail_OnRowDataBound(System.Object,System.Web.UI.WebControls.GridViewRowEventArgs)">
+            <summary>
+            Add multiple email receipients to a DropDown list
+            Otherwise add a label for single email receipts
+            </summary>
+        </member>
+        <member name="M:EmailWebApp.AccountClient.MaintainRecvEmailDDL">
+            <summary>
+            Maintain the dynamic content DropDown for multiple email receipients
+            </summary>
+        </member>
+        <member name="M:EmailWebApp.AccountClient.ddlMoveTo_SelectedIndexChanged(System.Object,System.EventArgs)">
+            <summary>
+            Update all Checked email with Tag selected in the MoveTo dropdown
+            </summary>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.form1">
+            <summary>
+            form1 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.btnNavLogout">
+            <summary>
+            btnNavLogout control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.hmAccountClientModal">
+            <summary>
+            hmAccountClientModal control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.svgAvatar">
+            <summary>
+            svgAvatar control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.lblNavUserName">
+            <summary>
+            lblNavUserName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.btnCreate">
+            <summary>
+            btnCreate control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.btnInbox">
+            <summary>
+            btnInbox control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.btnSent">
+            <summary>
+            btnSent control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.btnFlag">
+            <summary>
+            btnFlag control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.btnJunk">
+            <summary>
+            btnJunk control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.btnTrash">
+            <summary>
+            btnTrash control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.ddlCustomTags">
+            <summary>
+            ddlCustomTags control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.emailList">
+            <summary>
+            emailList control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.ddlMoveTo">
+            <summary>
+            ddlMoveTo control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.btnFlagEmail">
+            <summary>
+            btnFlagEmail control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.btnUnFlagEmail">
+            <summary>
+            btnUnFlagEmail control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.txtAddTag">
+            <summary>
+            txtAddTag control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.btnAddTag">
+            <summary>
+            btnAddTag control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.txtSearch">
+            <summary>
+            txtSearch control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.btnSearch">
+            <summary>
+            btnSearch control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.gvEmail">
+            <summary>
+            gvEmail control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.createEmail">
+            <summary>
+            createEmail control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.lblCreateEmail">
+            <summary>
+            lblCreateEmail control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.lblSendEmailAddr">
+            <summary>
+            lblSendEmailAddr control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.txtSendEmailAddr">
+            <summary>
+            txtSendEmailAddr control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.lblRecvEmailAddr">
+            <summary>
+            lblRecvEmailAddr control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.txtRecvEmailAddr">
+            <summary>
+            txtRecvEmailAddr control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.lblEmailSubject">
+            <summary>
+            lblEmailSubject control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.txtEmailSubject">
+            <summary>
+            txtEmailSubject control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.lblEmailBody">
+            <summary>
+            lblEmailBody control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.txtEmailBody">
+            <summary>
+            txtEmailBody control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.btnSendEmail">
+            <summary>
+            btnSendEmail control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.selectEmail">
+            <summary>
+            selectEmail control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.lblSelectMessage">
+            <summary>
+            lblSelectMessage control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.lblSelectEmailAvatar">
+            <summary>
+            lblSelectEmailAvatar control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.imgSelectEmailAvatar">
+            <summary>
+            imgSelectEmailAvatar control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.lblSelectFrom">
+            <summary>
+            lblSelectFrom control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.txtSelectFrom">
+            <summary>
+            txtSelectFrom control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.lblSelectRecv">
+            <summary>
+            lblSelectRecv control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.txtSelectRecv">
+            <summary>
+            txtSelectRecv control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.lblSelectSubject">
+            <summary>
+            lblSelectSubject control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.txtSelectSubject">
+            <summary>
+            txtSelectSubject control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.lblSelectDateTimeStamp">
+            <summary>
+            lblSelectDateTimeStamp control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.txtSelectDateTimeStamp">
+            <summary>
+            txtSelectDateTimeStamp control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.lblSelectEmail">
+            <summary>
+            lblSelectEmail control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.txtSelectEmail">
+            <summary>
+            txtSelectEmail control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.searchEmail">
+            <summary>
+            searchEmail control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:EmailWebApp.AccountClient.gvSearch">
+            <summary>
+            gvSearch control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="M:TermProject.ModalUserControl.btnToggleVisibility(System.Object,System.EventArgs)">
+            <summary>
+            Toggle the Modal display
+            </summary>
+        </member>
+        <member name="F:TermProject.ModalUserControl.upBtnHelp">
+            <summary>
+            upBtnHelp control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:TermProject.ModalUserControl.btnModalUserControl">
+            <summary>
+            btnModalUserControl control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:TermProject.ModalUserControl.upModalDiv">
+            <summary>
+            upModalDiv control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:TermProject.ModalUserControl.ModalHelp">
+            <summary>
+            ModalHelp control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:TermProject.ModalUserControl.ModalContent">
+            <summary>
+            ModalContent control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:TermProject.ModalUserControl.contentDiv">
+            <summary>
+            contentDiv control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+    </members>
+</doc>

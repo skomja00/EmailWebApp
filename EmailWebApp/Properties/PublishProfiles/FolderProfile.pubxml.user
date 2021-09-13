@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>X:\Project3</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="AccountClient.aspx">
+      <publishTime>05/29/2021 18:22:50</publishTime>
+    </File>
+    <File Include="AdminClient.aspx">
+      <publishTime>05/29/2021 19:20:37</publishTime>
+    </File>
+    <File Include="bin/EmailLibrary.dll">
+      <publishTime>05/29/2021 19:09:07</publishTime>
+    </File>
+    <File Include="bin/EmailLibrary.dll.config">
+      <publishTime>05/29/2021 19:05:41</publishTime>
+    </File>
+    <File Include="bin/EmailLibrary.pdb">
+      <publishTime>05/29/2021 19:09:07</publishTime>
+    </File>
+    <File Include="bin/EmailLibrary.XmlSerializers.dll">
+      <publishTime>05/29/2021 19:09:07</publishTime>
+    </File>
+    <File Include="bin/EmailWebApp.dll">
+      <publishTime>05/31/2021 20:06:05</publishTime>
+    </File>
+    <File Include="bin/EmailWebApp.pdb">
+      <publishTime>05/31/2021 20:06:05</publishTime>
+    </File>
+    <File Include="bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll">
+      <publishTime>05/24/2018 14:38:22</publishTime>
+    </File>
+    <File Include="bin/Newtonsoft.Json.dll">
+      <publishTime>03/17/2021 20:03:36</publishTime>
+    </File>
+    <File Include="bin/Project3.dll">
+      <publishTime>03/25/2021 09:24:08</publishTime>
+    </File>
+    <File Include="bin/Project3.pdb">
+      <publishTime>03/25/2021 09:24:08</publishTime>
+    </File>
+    <File Include="bin/roslyn/csc.exe">
+      <publishTime>05/24/2018 14:38:22</publishTime>
+    </File>
+    <File Include="bin/roslyn/csc.exe.config">
+      <publishTime>05/24/2018 14:38:22</publishTime>
+    </File>
+    <File Include="bin/roslyn/csc.rsp">
+      <publishTime>05/24/2018 14:38:22</publishTime>
+    </File>
+    <File Include="bin/roslyn/csi.exe">
+      <publishTime>05/24/2018 14:38:22</publishTime>
+    </File>
+    <File Include="bin/roslyn/csi.exe.config">
+      <publishTime>05/24/2018 14:38:22</publishTime>
+    </File>
+    <File Include="bin/roslyn/csi.rsp">
+      <publishTime>05/24/2018 14:38:22</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.Build.Tasks.CodeAnalysis.dll">
+      <publishTime>05/24/2018 14:38:22</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.CSharp.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.CSharp.Scripting.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.Scripting.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.VisualBasic.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CSharp.Core.targets">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.DiaSymReader.Native.amd64.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.DiaSymReader.Native.x86.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.Managed.Core.targets">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.VisualBasic.Core.targets">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.AppContext.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Collections.Immutable.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Console.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Diagnostics.FileVersionInfo.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Diagnostics.StackTrace.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.IO.Compression.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.IO.FileSystem.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.IO.FileSystem.Primitives.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.IO.Pipes.AccessControl.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.IO.Pipes.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Reflection.Metadata.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Security.AccessControl.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Security.Claims.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Security.Cryptography.Algorithms.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Security.Cryptography.Encoding.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Security.Cryptography.Primitives.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Security.Cryptography.X509Certificates.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Security.Principal.Windows.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Text.Encoding.CodePages.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.ValueTuple.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Xml.ReaderWriter.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Xml.XmlDocument.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Xml.XPath.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Xml.XPath.XDocument.dll">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/vbc.exe">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/vbc.exe.config">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/vbc.rsp">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/VBCSCompiler.exe">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="bin/roslyn/VBCSCompiler.exe.config">
+      <publishTime>05/24/2018 14:38:24</publishTime>
+    </File>
+    <File Include="Content/site.css">
+      <publishTime>03/25/2021 00:03:22</publishTime>
+    </File>
+    <File Include="CreateAcct.aspx">
+      <publishTime>05/29/2021 19:20:37</publishTime>
+    </File>
+    <File Include="ForgotPassword.aspx">
+      <publishTime>05/29/2021 19:20:36</publishTime>
+    </File>
+    <File Include="Global.asax">
+      <publishTime>05/29/2021 19:20:36</publishTime>
+    </File>
+    <File Include="Images/adult-man-avatar-with-short-curly-hair-and-mustache.svg">
+      <publishTime>03/09/2021 17:29:12</publishTime>
+    </File>
+    <File Include="Images/default-avatar.svg">
+      <publishTime>03/09/2021 17:12:41</publishTime>
+    </File>
+    <File Include="Images/EmailWebApp-ERD.png">
+      <publishTime>05/21/2021 12:44:00</publishTime>
+    </File>
+    <File Include="Images/female-avatar-image.svg">
+      <publishTime>03/09/2021 17:22:31</publishTime>
+    </File>
+    <File Include="Images/ForgotPassword.png">
+      <publishTime>05/07/2021 13:24:34</publishTime>
+    </File>
+    <File Include="Images/mail.svg">
+      <publishTime>03/09/2021 12:44:58</publishTime>
+    </File>
+    <File Include="Images/male-avatar.svg">
+      <publishTime>03/09/2021 17:23:17</publishTime>
+    </File>
+    <File Include="Images/male-profile-avatar-without-face.svg">
+      <publishTime>03/09/2021 17:24:18</publishTime>
+    </File>
+    <File Include="Images/man-avatar-with-bald-head-sunglasses-and-mustache.svg">
+      <publishTime>03/09/2021 17:44:17</publishTime>
+    </File>
+    <File Include="Images/man-with-mustache-avatar.svg">
+      <publishTime>03/09/2021 17:44:55</publishTime>
+    </File>
+    <File Include="Images/man-with-short-hair-profile-avatar.svg">
+      <publishTime>03/09/2021 17:45:39</publishTime>
+    </File>
+    <File Include="Images/manager-avatar.svg">
+      <publishTime>03/09/2021 17:18:03</publishTime>
+    </File>
+    <File Include="Images/multiple-users-silhouette.svg">
+      <publishTime>05/27/2021 16:35:08</publishTime>
+    </File>
+    <File Include="Images/nerd-male-profile-avatar.svg">
+      <publishTime>03/09/2021 17:46:13</publishTime>
+    </File>
+    <File Include="Images/nerd-man-with-curly-hair-and-circular-eyeglasses-avatar.svg">
+      <publishTime>03/09/2021 17:46:59</publishTime>
+    </File>
+    <File Include="Images/newtonsoft-logo.jpg">
+      <publishTime>05/11/2021 19:23:27</publishTime>
+    </File>
+    <File Include="Images/profiles-avatar.svg">
+      <publishTime>03/09/2021 17:49:04</publishTime>
+    </File>
+    <File Include="Images/RememberMe.png">
+      <publishTime>05/07/2021 13:24:34</publishTime>
+    </File>
+    <File Include="Images/woman-avatar.svg">
+      <publishTime>03/09/2021 17:49:37</publishTime>
+    </File>
+    <File Include="Images/young-man-avatar.svg">
+      <publishTime>03/09/2021 17:50:17</publishTime>
+    </File>
+    <File Include="Login.aspx">
+      <publishTime>05/29/2021 19:20:36</publishTime>
+    </File>
+    <File Include="ModalUserControl.ascx">
+      <publishTime>05/06/2021 09:17:56</publishTime>
+    </File>
+    <File Include="PDF/email-db-install.pdf">
+      <publishTime>05/29/2021 18:32:22</publishTime>
+    </File>
+    <File Include="Style/Common.css">
+      <publishTime>05/29/2021 20:46:08</publishTime>
+    </File>
+    <File Include="Style/Modal.css">
+      <publishTime>05/17/2021 22:51:42</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>05/29/2021 19:13:32</publishTime>
+    </File>
+  </ItemGroup>
+</Project>
