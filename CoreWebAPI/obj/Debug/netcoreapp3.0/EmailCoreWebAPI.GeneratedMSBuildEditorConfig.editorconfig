@@ -1,0 +1,5 @@
+is_global = true
+build_property.RootNamespace = EmailCoreWebAPI
+build_property.ProjectDir = W:\EmailWebApp\CoreWebAPI\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 

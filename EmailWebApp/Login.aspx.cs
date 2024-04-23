@@ -2,7 +2,7 @@
 using System.Web;
 using System.Data;
 using Utilities;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using EmailLibrary.Model;

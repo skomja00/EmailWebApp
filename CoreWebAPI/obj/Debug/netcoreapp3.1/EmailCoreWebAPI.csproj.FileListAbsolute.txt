@@ -1,0 +1,7 @@
+W:\EmailWebApp\CoreWebAPI\obj\Debug\netcoreapp3.1\EmailCoreWebAPI.csproj.AssemblyReference.cache
+W:\EmailWebApp\CoreWebAPI\obj\Debug\netcoreapp3.1\EmailCoreWebAPI.GeneratedMSBuildEditorConfig.editorconfig
+W:\EmailWebApp\CoreWebAPI\obj\Debug\netcoreapp3.1\EmailCoreWebAPI.AssemblyInfoInputs.cache
+W:\EmailWebApp\CoreWebAPI\obj\Debug\netcoreapp3.1\EmailCoreWebAPI.AssemblyInfo.cs
+W:\EmailWebApp\CoreWebAPI\obj\Debug\netcoreapp3.1\EmailCoreWebAPI.csproj.CoreCompileInputs.cache
+W:\EmailWebApp\CoreWebAPI\obj\Debug\netcoreapp3.1\EmailCoreWebAPI.MvcApplicationPartsAssemblyInfo.cache
+W:\EmailWebApp\CoreWebAPI\obj\Debug\netcoreapp3.1\EmailCoreWebAPI.sourcelink.json

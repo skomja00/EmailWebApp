@@ -33,3 +33,26 @@ C:\Users\james s\Documents\Temple 3342 Server-Side-Pgm\EmailWebApp\CoreWebAPI\ob
 C:\Users\james s\Documents\Temple 3342 Server-Side-Pgm\EmailWebApp\CoreWebAPI\obj\Debug\netcoreapp2.2\EmailCoreWebAPI.csproj.CopyComplete
 C:\Users\james s\Documents\Temple 3342 Server-Side-Pgm\EmailWebApp\CoreWebAPI\obj\Debug\netcoreapp2.2\EmailCoreWebAPI.dll
 C:\Users\james s\Documents\Temple 3342 Server-Side-Pgm\EmailWebApp\CoreWebAPI\obj\Debug\netcoreapp2.2\EmailCoreWebAPI.pdb
+W:\EmailWebApp\CoreWebAPI\bin\Debug\netcoreapp2.2\appsettings.Development.json
+W:\EmailWebApp\CoreWebAPI\bin\Debug\netcoreapp2.2\appsettings.json
+W:\EmailWebApp\CoreWebAPI\bin\Debug\netcoreapp2.2\EmailCoreWebAPI.deps.json
+W:\EmailWebApp\CoreWebAPI\bin\Debug\netcoreapp2.2\EmailCoreWebAPI.runtimeconfig.json
+W:\EmailWebApp\CoreWebAPI\bin\Debug\netcoreapp2.2\EmailCoreWebAPI.runtimeconfig.dev.json
+W:\EmailWebApp\CoreWebAPI\bin\Debug\netcoreapp2.2\EmailCoreWebAPI.dll
+W:\EmailWebApp\CoreWebAPI\bin\Debug\netcoreapp2.2\EmailCoreWebAPI.pdb
+W:\EmailWebApp\CoreWebAPI\bin\Debug\netcoreapp2.2\EmailLibrary.dll
+W:\EmailWebApp\CoreWebAPI\bin\Debug\netcoreapp2.2\EmailLibrary.pdb
+W:\EmailWebApp\CoreWebAPI\bin\Debug\netcoreapp2.2\EmailLibrary.dll.config
+W:\EmailWebApp\CoreWebAPI\obj\Debug\netcoreapp2.2\EmailCoreWebAPI.csproj.AssemblyReference.cache
+W:\EmailWebApp\CoreWebAPI\obj\Debug\netcoreapp2.2\EmailCoreWebAPI.GeneratedMSBuildEditorConfig.editorconfig
+W:\EmailWebApp\CoreWebAPI\obj\Debug\netcoreapp2.2\EmailCoreWebAPI.AssemblyInfoInputs.cache
+W:\EmailWebApp\CoreWebAPI\obj\Debug\netcoreapp2.2\EmailCoreWebAPI.AssemblyInfo.cs
+W:\EmailWebApp\CoreWebAPI\obj\Debug\netcoreapp2.2\EmailCoreWebAPI.csproj.CoreCompileInputs.cache
+W:\EmailWebApp\CoreWebAPI\obj\Debug\netcoreapp2.2\EmailCoreWebAPI.RazorAssemblyInfo.cache
+W:\EmailWebApp\CoreWebAPI\obj\Debug\netcoreapp2.2\EmailCoreWebAPI.RazorAssemblyInfo.cs
+W:\EmailWebApp\CoreWebAPI\obj\Debug\netcoreapp2.2\EmailCoreWebAPI.sourcelink.json
+W:\EmailWebApp\CoreWebAPI\obj\Debug\netcoreapp2.2\EmailCoreWebAPI.RazorTargetAssemblyInfo.cache
+W:\EmailWebApp\CoreWebAPI\obj\Debug\netcoreapp2.2\EmailCor.A38E8132.Up2Date
+W:\EmailWebApp\CoreWebAPI\obj\Debug\netcoreapp2.2\EmailCoreWebAPI.dll
+W:\EmailWebApp\CoreWebAPI\obj\Debug\netcoreapp2.2\EmailCoreWebAPI.pdb
+W:\EmailWebApp\CoreWebAPI\obj\Debug\netcoreapp2.2\EmailCoreWebAPI.genruntimeconfig.cache

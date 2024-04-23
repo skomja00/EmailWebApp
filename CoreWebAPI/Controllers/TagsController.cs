@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EmailLibrary.Model;
 using Utilities;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Data;
 
 namespace EmailCoreWebAPI.Controllers

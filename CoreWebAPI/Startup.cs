@@ -28,7 +28,7 @@ namespace CoreWebAPI
         {
             services
                 .AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddJsonOptions(options =>
+                .AddNewtonsoftJson(options =>
                     options.SerializerSettings.ContractResolver = new DefaultContractResolver());
             //.AddXmlSerializerFormatters();
         }
@@ -46,8 +46,15 @@ namespace CoreWebAPI
                 app.UseHsts();
             }
 
+            app.UseRouting();
+            app.UseAuthorization();
             app.UseHttpsRedirection();
-            app.UseMvc();
+            //app.UseMvc();
+            app.UseEndpoints(endpoints => {
+                endpoints
+                    .MapControllers()
+                    .RequireAuthorization();
+            });
         }
     }
 }
