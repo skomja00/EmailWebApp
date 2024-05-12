@@ -68,16 +68,6 @@ namespace EmailLibrary.Model
 
                 return this;
             }
-
-
-            //objAccount = pxy.LogIn(theCreatedEmailAddress, theAccountPassword);
-
-            //if (objAccount.AccountId > 0)
-            //{
-            //    InitializeThis();
-            //}
-
-            //return this;
         }
         public DataSet GetAccountsWithFlaggedEmail()
         {
