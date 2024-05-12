@@ -38,6 +38,7 @@ namespace EmailCoreWebAPI.Controllers
 
             SqlParameter accountPassword = new SqlParameter("@AccountPassword", SqlDbType.VarBinary);
             accountPassword.Direction = ParameterDirection.Input;
+            //TODO: fix theLoginPass is null problem. Remove hard code line below when fixed
             theLoginPass = [38, 115, 186, 94, 164, 122, 219, 172, 220, 69, 233, 217, 178, 239, 107, 43];
             //accountPassword.Value = Request.Query.ToDictionary()["theLoginPass"];
             accountPassword.Value = theLoginPass;
