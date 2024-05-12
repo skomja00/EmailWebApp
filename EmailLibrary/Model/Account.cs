@@ -8,6 +8,8 @@ using System.Data;
 using Microsoft.Data.SqlClient;
 using System.Security.Cryptography;
 using System.IO;
+using Newtonsoft.Json;
+using System.Net;
 
 namespace EmailLibrary.Model
 {
@@ -16,14 +18,18 @@ namespace EmailLibrary.Model
     {
         DBConnect objDB = new DBConnect();
         SqlCommand objSqlCmd = new SqlCommand();
+        //private string baseUrl = "http://cis-iis2.temple.edu/spring2021/cis3342_tun49199/WebAPI/api";
+        private string baseUrl = "https://localhost:55787/api";
 
-        //Create a web service proxy object
-        //using the AccountWeb.asmx page
-        AccountService.AccountWeb pxy = new AccountService.AccountWeb();
+        DataSet acctDS;
+        DataSet flaggedAccountsDS;
+        ////Create a web service proxy object
+        ////using the AccountWeb.asmx page
+        //AccountService.AccountWeb pxy = new AccountService.AccountWeb();
 
-        //Create an object of the of the AccountService.Account class
-        //using the AccountService and WSDL
-        AccountService.Account objAccount = new AccountService.Account();
+        ////Create an object of the of the AccountService.Account class
+        ////using the AccountService and WSDL
+        //AccountService.Account objAccount = new AccountService.Account();
 
         private int accountId;
         private string userName;
@@ -41,79 +47,106 @@ namespace EmailLibrary.Model
         private string accountRoleType;
         private static Byte[] key =    { 250, 101, 018, 076, 045, 135, 207, 118, 004, 171, 003, 168, 202, 241, 037, 199 };
         private static Byte[] vector = { 146, 064, 191, 111, 023, 003, 113, 119, 231, 121, 252, 112, 079, 032, 114, 156 };
-        
+
         public Account LogIn(string theCreatedEmailAddress, Byte[] theAccountPassword)
         {
-            objAccount = pxy.LogIn(theCreatedEmailAddress, theAccountPassword);
-
-            if (objAccount.AccountId > 0)
             {
-                InitializeThis();
+                WebRequest request = WebRequest.Create(baseUrl + "/Account/LogIn?theLoginEmail=" + theCreatedEmailAddress +
+                                                                                "&theLoginPass=" + theAccountPassword);
+                WebResponse response = request.GetResponse();
+                Stream stream = response.GetResponseStream();
+                StreamReader reader = new StreamReader(stream);
+                String json = reader.ReadToEnd();
+                reader.Close();
+                response.Close();
+                Account acct =  JsonConvert.DeserializeObject<Account>(json);
+                
+                if (acct.AccountId > 0)
+                {
+                    InitializeThis(acct);
+                }
+
+                return this;
             }
 
-            return this;
+
+            //objAccount = pxy.LogIn(theCreatedEmailAddress, theAccountPassword);
+
+            //if (objAccount.AccountId > 0)
+            //{
+            //    InitializeThis();
+            //}
+
+            //return this;
         }
         public DataSet GetAccountsWithFlaggedEmail()
         {
-            DataSet flaggedEmails = pxy.GetAccountsWithFlaggedEmail();
+            WebRequest request = WebRequest.Create(baseUrl + "/Account/FlaggedEmail");
+            WebResponse response = request.GetResponse();
+            Stream stream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(stream);
+            String json = reader.ReadToEnd();
+            reader.Close();
+            response.Close();
+            flaggedAccountsDS = JsonConvert.DeserializeObject<DataSet>(json);
 
-            return flaggedEmails;
+            return flaggedAccountsDS;
         }
-        public int BanUnban()
-        {
-            objAccount.AccountId = this.AccountId;
-            objAccount.Active = this.Active;
+        //public int BanUnban()
+        //{
+        //    this.AccountId = this.AccountId;
+        //    this.Active = this.Active;
 
-            int result = pxy.BanUnBan(objAccount);
+        //    //int result = pxy.BanUnBan(this);
 
-            return result;
-        }
-        public int CreateAccount ()
-        {
-            objAccount.AccountId = this.AccountId;
-            objAccount.UserName = this.UserName;
-            objAccount.UserAddress = this.UserAddress;
-            objAccount.PhoneNumber = this.PhoneNumber;
-            objAccount.CreatedEmailAddress = this.CreatedEmailAddress;
-            objAccount.ContactEmailAddress = this.ContactEmailAddress;
-            objAccount.Avatar = this.Avatar;
-            objAccount.AccountPassword = this.AccountPassword;
-            objAccount.Active = this.Active;
-            objAccount.AccountRoleType = this.AccountRoleType;
-            objAccount.SecurityQuestionCity = this.SecurityQuestionCity;
-            objAccount.SecurityQuestionPhone = this.SecurityQuestionPhone;
-            objAccount.SecurityQuestionSchool = this.SecurityQuestionSchool;
+        //    return result;
+        //}
+        //public int CreateAccount ()
+        //{
+        //    this.AccountId = this.AccountId;
+        //    this.UserName = this.UserName;
+        //    this.UserAddress = this.UserAddress;
+        //    this.PhoneNumber = this.PhoneNumber;
+        //    this.CreatedEmailAddress = this.CreatedEmailAddress;
+        //    this.ContactEmailAddress = this.ContactEmailAddress;
+        //    this.Avatar = this.Avatar;
+        //    this.AccountPassword = this.AccountPassword;
+        //    this.Active = this.Active;
+        //    this.AccountRoleType = this.AccountRoleType;
+        //    this.SecurityQuestionCity = this.SecurityQuestionCity;
+        //    this.SecurityQuestionPhone = this.SecurityQuestionPhone;
+        //    this.SecurityQuestionSchool = this.SecurityQuestionSchool;
 
-            int returnValue = pxy.CreateAccount(objAccount);
+        //    int returnValue = pxy.CreateAccount(this);
 
-            return returnValue;
-        }
-        public int SecurityQuestions ()
-        {
-            objAccount.CreatedEmailAddress = this.CreatedEmailAddress;
-            objAccount.SecurityQuestionCity = this.SecurityQuestionCity;
-            objAccount.SecurityQuestionPhone = this.SecurityQuestionPhone;
-            objAccount.SecurityQuestionSchool = this.SecurityQuestionSchool;
+        //    return returnValue;
+        //}
+        //public int SecurityQuestions ()
+        //{
+        //    this.CreatedEmailAddress = this.CreatedEmailAddress;
+        //    this.SecurityQuestionCity = this.SecurityQuestionCity;
+        //    this.SecurityQuestionPhone = this.SecurityQuestionPhone;
+        //    this.SecurityQuestionSchool = this.SecurityQuestionSchool;
 
-            int numOfCorrectResponses = pxy.SecurityQuestions(objAccount);
+        //    int numOfCorrectResponses = pxy.SecurityQuestions(this);
 
-            return numOfCorrectResponses;
-        }
+        //    return numOfCorrectResponses;
+        //}
         /// <summary>
         /// Execute the TP_Account_Update_Password_SP stored procedure to update the AccountPassword
         /// </summary>
         /// <param name="theCreatedEmailAddress"></param>
         /// <param name="thePassword"></param>
         /// <returns>Integer number of rows affected by the update, or -1 for an exception</returns>
-        public int UpdatePassword()
-        {
-            objAccount.CreatedEmailAddress = this.CreatedEmailAddress;
-            objAccount.AccountPassword = this.AccountPassword;
+        //public int UpdatePassword()
+        //{
+        //    this.CreatedEmailAddress = this.CreatedEmailAddress;
+        //    this.AccountPassword = this.AccountPassword;
 
-            int returnValue = pxy.UpdatePassword(objAccount);
+        //    int returnValue = pxy.UpdatePassword(this);
 
-            return returnValue;
-        }
+        //    return returnValue;
+        //}
         /// <summary>
         /// Encrypt the given password and return an Encrypted Byte[]
         /// </summary>
@@ -182,19 +215,19 @@ namespace EmailLibrary.Model
 
             encoder.GetString(textBytes);
         }
-        void InitializeThis ()
+        void InitializeThis (Account theAcct)
         {
-            this.AccountId = objAccount.AccountId;
-            this.UserName = objAccount.UserName;
-            this.UserAddress = objAccount.UserAddress;
-            this.PhoneNumber = objAccount.PhoneNumber;
-            this.CreatedEmailAddress = objAccount.CreatedEmailAddress;
-            this.ContactEmailAddress = objAccount.ContactEmailAddress;
-            this.Avatar = objAccount.Avatar;
-            this.AccountPassword = objAccount.AccountPassword;
-            this.Active = objAccount.Active;
-            this.DateTimeStamp = objAccount.DateTimeStamp;
-            this.AccountRoleType = objAccount.AccountRoleType;
+            this.AccountId = theAcct.AccountId;
+            this.UserName = theAcct.UserName;
+            this.UserAddress = theAcct.UserAddress;
+            this.PhoneNumber = theAcct.PhoneNumber;
+            this.CreatedEmailAddress = theAcct.CreatedEmailAddress;
+            this.ContactEmailAddress = theAcct.ContactEmailAddress;
+            this.Avatar = theAcct.Avatar;
+            this.AccountPassword = theAcct.AccountPassword;
+            this.Active = theAcct.Active;
+            this.DateTimeStamp = theAcct.DateTimeStamp;
+            this.AccountRoleType = theAcct.AccountRoleType;
         }
 
         public int AccountId

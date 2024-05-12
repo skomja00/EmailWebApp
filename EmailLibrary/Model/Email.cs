@@ -9,13 +9,14 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Utilities;
+using System.Globalization;
 
 namespace EmailLibrary.Model
 {
     public class Email
     {
-        private string baseUrl = "http://cis-iis2.temple.edu/spring2021/cis3342_tun49199/WebAPI/api";
-        //private string baseUrl = "https://localhost:44349/api";
+        //private string baseUrl = "http://cis-iis2.temple.edu/spring2021/cis3342_tun49199/WebAPI/api";
+        private string baseUrl = "https://localhost:55787/api";
 
         private int emailId;
         private string sendAccount;
@@ -23,7 +24,9 @@ namespace EmailLibrary.Model
         private string emailSubject;
         private string emailBody;
         private DateTime dateTimeStamp;
-        
+        private static string datePattern = "ccccMMddyy";
+
+
         DBConnect objDB = new DBConnect();
         SqlCommand objSqlCmd = new SqlCommand();
         DataSet emailDS;

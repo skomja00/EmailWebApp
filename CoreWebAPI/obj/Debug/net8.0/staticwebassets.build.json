@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "ZUB7SyqkYD7Y9m5gQSJ2vxmQMgHdk9YZQfTmOQTXUVU=",
+  "Source": "EmailCoreWebAPI",
+  "BasePath": "_content/EmailCoreWebAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

@@ -42,15 +42,15 @@ namespace EmailWebApp
                 acct.SecurityQuestionPhone = txtResponsePhone.Text;
                 acct.SecurityQuestionSchool = txtResponseSchool.Text;
                 acct.CreatedEmailAddress = txtEmailAddress.Text;
-                int numOfCorrectResponses = acct.SecurityQuestions();
-                if (numOfCorrectResponses == 3)
-                {
-                    MakeVisible("newPasswordCard");
-                }
-                else
-                {
-                    Response.Write("<script>alert('Incorrect. Please check your Security Questions and try again.')</script>");
-                }
+                //int numOfCorrectResponses = acct.SecurityQuestions();
+                //if (numOfCorrectResponses == 3)
+                //{
+                //    MakeVisible("newPasswordCard");
+                //}
+                //else
+                //{
+                //    Response.Write("<script>alert('Incorrect. Please check your Security Questions and try again.')</script>");
+                //}
             }
             else
             {
@@ -71,15 +71,15 @@ namespace EmailWebApp
                 Account acct = new Account();
                 acct.AccountPassword = Account.Encrypt(txtNewPassword.Text);
                 acct.CreatedEmailAddress = txtEmailAddress.Text;
-                int returnValue = acct.UpdatePassword();
-                if (returnValue > 0)
-                {
-                    Response.Redirect("Login.aspx");
-                }
-                else
-                {
-                    Response.Write("<script>alert('Problem updating password in the database. Please contact the HelpDesk.')</script>");
-                }
+                //int returnValue = acct.UpdatePassword();
+                //if (returnValue > 0)
+                //{
+                //    Response.Redirect("Login.aspx");
+                //}
+                //else
+                //{
+                //    Response.Write("<script>alert('Problem updating password in the database. Please contact the HelpDesk.')</script>");
+                //}
             }
         }
         private void MakeVisible(string theContent)

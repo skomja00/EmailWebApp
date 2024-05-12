@@ -22,6 +22,7 @@ namespace EmailWebApp
             //Response.Cookies.Remove("CIS3342_Email");
             if (!IsPostBack)
             {
+                txtEmail.Focus();
                 objCookie = Request.Cookies["CIS3342_Email"];
                 if (objCookie != null)
                 {
@@ -130,13 +131,13 @@ namespace EmailWebApp
                 "<b>Email</b> is one of the most widely used features of the Internet. The <b>Email WebApp</b> allows sending and receiving messages with anyone registered with the App. The App provides a system administrator the ability to ban users whose email has been flagged. " +
                 "Take a moment to create an account, login and explore the options. Be sure to click \"Help/About\" to see more .NET features on the other pages.</p>" +
                 "<p>The Email WebApp implements many .NET technologies. " +
-                "For instance, the content you are reading is a Modal <b>Custom Control</b> used throughout the web app. The modal uses <b>UpdatePanels</b> with <b>AJAX</b> Javascript provided by a ScriptManager. The Partial Page updates prevent a Full Page Postback closing the modal due to the default CSS Styling \"display: none\".</p>" +
+                "For instance, the content you are reading is a Modal <b>Custom Control</b> used throughout the web app. The modal uses <b>UpdatePanels</b> with <b>AJAX</b> Javascript provided by a ScriptManager. The Partial Page updates prevent a Full Page Postback closing the modal window the CSS Styling \"display: none\".</p>" +
                 "<p>CSS styling via the Content Delivery Network (CDN) is built on the <i class=\"bi bi-bootstrap-fill\" style=\"color: cornflowerblue;\"></i> <b>Bootstrap</b> Framework with some <b>FlexBox</b></p>" +
                 "<h3>EmailWebApp is a 4 part solution</h3>" +
                 "<ol>" +
-                "<li>The <b>EmailCoreWebAPI</b> .NET Core project provides <b>RESTful</b> services for Email, EmailReceipt, Tag, etc datatypes</li>" +
-                "<li>The <b>EmailLibrary</b> .NET Framework project is the collection of the datatype properties and methods used by the WebApp</li>" +
-                "<li>The <b>EmailSoapWebService</b> .NET Framework project serves all necessary <b>WebMethods</b> for the Account datatype</li>" +
+                "<li>The <b>EmailCoreWebAPI</b> ASP.NET Core 2.2 APIs to provide Controllers for <b>RESTful</b> services for Email, EmailReceipt, Tag, etc datatypes</li>" +
+                "<li>The <b>EmailLibrary</b> .NET Framework project are a collection of classes with properties and methods used by the WebApp</li>" +
+                "<li>The <b>EmailSoapWebService</b> <u>(deprecated)</u> .NET Framework project serves all necessary <b>WebMethods</b> for the Account datatype</li>" +
                 "<li>The <b>EmailWebApp</b> .NET Framework dynamic web pages allow an email user to interact with the web app</li>" +
                 "</ol>" +
                 "<h3>LogIn Help</h3> " +
@@ -153,7 +154,7 @@ namespace EmailWebApp
                 "    <li>The BanUnBan() method calls the \"Account_Active_Update_SP\" <b>stored procedure</b> which returns an Integer indicating the number of rows affected by the update.</li> " +
                 "    <li>The GetAccountsWithFlaggedEmail() method calls the \"Get_Accounts_With_Flagged_Email_SP\" <b>stored procedure</b> which returns a DataSet of Accounts with flagged email.</li> " +
                 "</ul> " +
-                "<p><a target=\"_blank\" href=\"Images/EmailWebApp-ERD.png\" type=\"application/pdf\">Here</a> is a basic database ERD and <a target=\"_blank\" href=\"PDF/email-db-install.pdf\" type=\"application/pdf\"> here</a> are the database scripts including tables, constraints, stored procedures, sample data, etc.";
+                "<p><a target=\"_blank\" href=\"Images/EmailWebApp-ERD.png\" type=\"application/pdf\">Here</a> is a basic database ERD and <a target=\"_blank\" href=\"PDF/email-db-install.pdf\" type=\"application/pdf\"> here</a> are the database scripts including tables, constraints, stored procedures, sample data, etc."; 
         }
         protected void btnForgotPassword_Click(object sender, EventArgs e)
         {

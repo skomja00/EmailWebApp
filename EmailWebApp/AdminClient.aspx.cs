@@ -80,7 +80,7 @@ namespace EmailWebApp
                 {
                     acct.AccountId = Convert.ToInt32(gvAccounts.DataKeys[i].Values["AccountId"]);
                     acct.Active = "no";
-                    acct.BanUnban();
+                    //acct.BanUnban();
                 }
             }
             DataSet accountDS = acct.GetAccountsWithFlaggedEmail();
@@ -105,7 +105,7 @@ namespace EmailWebApp
                 {
                     acct.AccountId = Convert.ToInt32(gvAccounts.DataKeys[i].Values["AccountId"]);
                     acct.Active = "yes";
-                    acct.BanUnban();
+                    //acct.BanUnban();
                 }
             }
             DataSet accountDS = acct.GetAccountsWithFlaggedEmail();

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "oJv73wdDmF/Y3B3CAdEUQ7KNRpfjreB2e2DOmEUm8Z/cXUsnlYPiSF4J+yMC/xtgCAHVZqH7+tbBD0KpEss0tw==",
+  "dgSpecHash": "7ztgaTHpp50CwE2vlTnb5JWbgqbV4RwUBZJLhBKseQgzuRLlaiVCdetuONesNoMZwAFwKAQ0midoRe6htmr1HA==",
   "success": true,
   "projectFilePath": "W:\\EmailWebApp\\CoreWebAPI\\EmailCoreWebAPI.csproj",
   "expectedPackageFiles": [
@@ -58,7 +58,6 @@
     "C:\\Users\\admin\\.nuget\\packages\\humanizer.core.zh-hant\\2.14.1\\humanizer.core.zh-hant.2.14.1.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\8.0.4\\microsoft.aspnetcore.jsonpatch.8.0.4.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\8.0.4\\microsoft.aspnetcore.mvc.newtonsoftjson.8.0.4.nupkg.sha512",
-    "C:\\Users\\admin\\.nuget\\packages\\microsoft.aspnetcore.razor.design\\2.2.0\\microsoft.aspnetcore.razor.design.2.2.0.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\microsoft.aspnetcore.razor.language\\6.0.24\\microsoft.aspnetcore.razor.language.6.0.24.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\7.0.0\\microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\microsoft.build\\17.8.3\\microsoft.build.17.8.3.nupkg.sha512",

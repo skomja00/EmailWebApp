@@ -24,6 +24,7 @@ namespace CoreWebAPI
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        [Obsolete]
         public void ConfigureServices(IServiceCollection services)
         {
             services
@@ -34,6 +35,7 @@ namespace CoreWebAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        [Obsolete]
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -48,12 +50,13 @@ namespace CoreWebAPI
 
             app.UseRouting();
             app.UseAuthorization();
+            app.UseAuthentication();
             app.UseHttpsRedirection();
             //app.UseMvc();
             app.UseEndpoints(endpoints => {
                 endpoints
-                    .MapControllers()
-                    .RequireAuthorization();
+                    .MapControllers();
+                    //.RequireAuthorization();
             });
         }
     }

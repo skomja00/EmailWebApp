@@ -241,3 +241,11 @@ W:\EmailWebApp\CoreWebAPI\obj\Debug\net8.0\ref\EmailCoreWebAPI.dll
 W:\EmailWebApp\CoreWebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
 W:\EmailWebApp\CoreWebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 W:\EmailWebApp\CoreWebAPI\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+W:\EmailWebApp\CoreWebAPI\obj\Debug\net8.0\staticwebassets.build.json
+W:\EmailWebApp\CoreWebAPI\obj\Debug\net8.0\staticwebassets.development.json
+W:\EmailWebApp\CoreWebAPI\obj\Debug\net8.0\staticwebassets\msbuild.EmailCoreWebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+W:\EmailWebApp\CoreWebAPI\obj\Debug\net8.0\staticwebassets\msbuild.build.EmailCoreWebAPI.props
+W:\EmailWebApp\CoreWebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.EmailCoreWebAPI.props
+W:\EmailWebApp\CoreWebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.EmailCoreWebAPI.props
+W:\EmailWebApp\CoreWebAPI\obj\Debug\net8.0\staticwebassets.pack.json
+W:\EmailWebApp\CoreWebAPI\obj\Debug\net8.0\scopedcss\bundle\EmailCoreWebAPI.styles.css

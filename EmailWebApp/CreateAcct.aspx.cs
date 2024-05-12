@@ -73,33 +73,33 @@ namespace EmailWebApp
                 newAcct.SecurityQuestionCity = txtSecQuestionCity.Text;
                 newAcct.SecurityQuestionPhone = txtSecQuestionPhone.Text;
                 newAcct.SecurityQuestionSchool = txtSecQuestionSchool.Text;
-                if (newAcct.CreateAccount() == -1)
-                {
-                    Response.Write("<script>alert('Create account unsuccessful. Please check your input.')</script>");
-                }
-                else
-                {
-                    lblTopMessage.Text = "Account created. Click \"Go to Sign In\" Button to Log In.";
-                    lblTopMessage.CssClass = "text-success font-weight-bold";
-                    btnCreateAccount.CssClass = "btn btn-outline-secondary";
-                    btnLogIn.CssClass = "btn btn-primary";
-                    rblUserType.SelectedIndex = -1;
-                    txtUserName.Text = null;
-                    txtAddress.Text = null;
-                    txtPhoneNumber.Text = null;
-                    txtEmail.Text = null;
-                    txtEmailSecurity.Text = null;
-                    ddlAvatar.SelectedIndex = -1;
-                    txtPassword.Text = null;
-                    txtPasswordConfirm.Text = null;
-                    rblUserType.SelectedIndex = -1;
-                    ddlAvatar.SelectedIndex = -1;
-                    txtSecQuestionCity.Text = null;
-                    txtSecQuestionPhone.Text = null;
-                    txtSecQuestionSchool.Text = null;
-                    imgAvatar.ImageUrl = "Images/default-avatar.svg";
-                    Response.Write("<script>alert('Account created. Click \"Go to Sign In\" Button to Log In.')</script>");
-                }
+                //if (newAcct.CreateAccount() == -1)
+                //{
+                //    Response.Write("<script>alert('Create account unsuccessful. Please check your input.')</script>");
+                //}
+                //else
+                //{
+                //    lblTopMessage.Text = "Account created. Click \"Go to Sign In\" Button to Log In.";
+                //    lblTopMessage.CssClass = "text-success font-weight-bold";
+                //    btnCreateAccount.CssClass = "btn btn-outline-secondary";
+                //    btnLogIn.CssClass = "btn btn-primary";
+                //    rblUserType.SelectedIndex = -1;
+                //    txtUserName.Text = null;
+                //    txtAddress.Text = null;
+                //    txtPhoneNumber.Text = null;
+                //    txtEmail.Text = null;
+                //    txtEmailSecurity.Text = null;
+                //    ddlAvatar.SelectedIndex = -1;
+                //    txtPassword.Text = null;
+                //    txtPasswordConfirm.Text = null;
+                //    rblUserType.SelectedIndex = -1;
+                //    ddlAvatar.SelectedIndex = -1;
+                //    txtSecQuestionCity.Text = null;
+                //    txtSecQuestionPhone.Text = null;
+                //    txtSecQuestionSchool.Text = null;
+                //    imgAvatar.ImageUrl = "Images/default-avatar.svg";
+                //    Response.Write("<script>alert('Account created. Click \"Go to Sign In\" Button to Log In.')</script>");
+                //}
             }
         }
         protected void LoadModalContent()

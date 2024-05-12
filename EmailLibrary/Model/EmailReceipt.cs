@@ -13,8 +13,8 @@ namespace EmailLibrary.Model
 {
     public class EmailReceipt
     {
-        private static string baseUrl = "http://cis-iis2.temple.edu/spring2021/cis3342_tun49199/WebAPI/api";
-        //private static string baseUrl = "https://localhost:44349/api";
+        //private static string baseUrl = "http://cis-iis2.temple.edu/spring2021/cis3342_tun49199/WebAPI/api";
+        private static string baseUrl = "https://localhost:55787/api";
 
         private static string data;
 
