@@ -42,15 +42,15 @@ namespace EmailWebApp
                 acct.SecurityQuestionPhone = txtResponsePhone.Text;
                 acct.SecurityQuestionSchool = txtResponseSchool.Text;
                 acct.CreatedEmailAddress = txtEmailAddress.Text;
-                //int numOfCorrectResponses = acct.SecurityQuestions();
-                //if (numOfCorrectResponses == 3)
-                //{
-                //    MakeVisible("newPasswordCard");
-                //}
-                //else
-                //{
-                //    Response.Write("<script>alert('Incorrect. Please check your Security Questions and try again.')</script>");
-                //}
+                int numOfCorrectResponses = acct.SecurityQuestions();
+                if (numOfCorrectResponses == 3)
+                {
+                    MakeVisible("newPasswordCard");
+                }
+                else
+                {
+                    Response.Write("<script>alert('Incorrect. Please check your Security Questions and try again.')</script>");
+                }
             }
             else
             {

@@ -111,17 +111,40 @@ namespace EmailLibrary.Model
 
         //    return returnValue;
         //}
-        //public int SecurityQuestions ()
-        //{
-        //    this.CreatedEmailAddress = this.CreatedEmailAddress;
-        //    this.SecurityQuestionCity = this.SecurityQuestionCity;
-        //    this.SecurityQuestionPhone = this.SecurityQuestionPhone;
-        //    this.SecurityQuestionSchool = this.SecurityQuestionSchool;
+        public int SecurityQuestions()
+        {
+            string data;
+            string json = JsonConvert.SerializeObject(this, Formatting.Indented);
 
-        //    int numOfCorrectResponses = pxy.SecurityQuestions(this);
+            try
+            {
+                WebRequest request = WebRequest.Create(baseUrl + "/Account/SecurityQuestions");
+                request.Method = "POST";
+                request.ContentLength = json.Length;
+                request.ContentType = "application/json";
 
-        //    return numOfCorrectResponses;
-        //}
+                StreamWriter writer = new StreamWriter(request.GetRequestStream());
+                writer.Write(json);
+                writer.Flush();
+                writer.Close();
+
+                WebResponse response = request.GetResponse();
+                Stream stream = response.GetResponseStream();
+                StreamReader reader = new StreamReader(stream);
+                data = reader.ReadToEnd();
+                reader.Close();
+                response.Close();
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+
+            if (data == "true")
+                return 3;
+            else
+                return 0;
+        }
         /// <summary>
         /// Execute the TP_Account_Update_Password_SP stored procedure to update the AccountPassword
         /// </summary>

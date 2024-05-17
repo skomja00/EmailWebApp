@@ -8,6 +8,7 @@ using Utilities;
 using System.Data;
 using EmailLibrary.Model;
 using System.Text;
+using System.Xml.Serialization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -65,6 +66,51 @@ namespace EmailCoreWebAPI.Controllers
 
             return acct;
 
+        }
+        /// <summary>
+        /// Check the given responses to the Security Question match the database.
+        /// Return the number of matching responses.
+        /// </summary>
+        /// <returns>int Number of matching responses</returns>
+        //POST api/Account/SecurityQuestions
+        [HttpPost("Account/SecurityQuestions")]
+        [Produces("application/json")]
+        public int SecurityQuestions([FromBody] Account theAccount)
+        {
+            SqlCommand objSqlCmd = new SqlCommand();
+
+            objSqlCmd.CommandText = "Account_Security_Questions_SP";
+            objSqlCmd.CommandType = CommandType.StoredProcedure;
+
+            SqlParameter emailParm = new SqlParameter("@CreatedEmailAddress", theAccount.CreatedEmailAddress);
+            emailParm.Direction = ParameterDirection.Input;
+            emailParm.SqlDbType = SqlDbType.VarChar;
+            emailParm.Size = 254;
+            objSqlCmd.Parameters.Add(emailParm);
+
+            SqlParameter cityParm = new SqlParameter("@ResponseCity", theAccount.SecurityQuestionCity);
+            cityParm.Direction = ParameterDirection.Input;
+            cityParm.SqlDbType = SqlDbType.VarChar;
+            cityParm.Size = 254;
+            objSqlCmd.Parameters.Add(cityParm);
+
+            SqlParameter phoneParm = new SqlParameter("@ResponsePhone", theAccount.SecurityQuestionPhone);
+            phoneParm.Direction = ParameterDirection.Input;
+            phoneParm.SqlDbType = SqlDbType.VarChar;
+            phoneParm.Size = 254;
+            objSqlCmd.Parameters.Add(phoneParm);
+
+            SqlParameter schoolParm = new SqlParameter("@ResponseSchool", theAccount.SecurityQuestionSchool);
+            schoolParm.Direction = ParameterDirection.Input;
+            schoolParm.SqlDbType = SqlDbType.VarChar;
+            schoolParm.Size = 254;
+            objSqlCmd.Parameters.Add(schoolParm);
+
+            DataSet objDS = objDB.GetDataSetUsingCmdObj(objSqlCmd);
+
+            int numOfCorrectResponses = Convert.ToInt32(objDS.Tables[0].Rows[0].ItemArray[0]);
+
+            return numOfCorrectResponses;
         }
     }
 }
