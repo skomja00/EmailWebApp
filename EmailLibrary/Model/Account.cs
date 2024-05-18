@@ -140,10 +140,7 @@ namespace EmailLibrary.Model
                 return 0;
             }
 
-            if (data == "true")
-                return 3;
-            else
-                return 0;
+            return Int32.Parse(data);
         }
         /// <summary>
         /// Execute the TP_Account_Update_Password_SP stored procedure to update the AccountPassword

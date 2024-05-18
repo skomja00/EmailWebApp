@@ -68,12 +68,12 @@ namespace EmailCoreWebAPI.Controllers
 
         }
         /// <summary>
-        /// Check the given responses to the Security Question match the database.
+        /// Check the count of responses to the Security Question match the database.
         /// Return the number of matching responses.
         /// </summary>
         /// <returns>int Number of matching responses</returns>
         //POST api/Account/SecurityQuestions
-        [HttpPost("Account/SecurityQuestions")]
+        [HttpPost("SecurityQuestions")]
         [Produces("application/json")]
         public int SecurityQuestions([FromBody] Account theAccount)
         {

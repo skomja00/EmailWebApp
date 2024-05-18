@@ -1134,4 +1134,29 @@ GO
 	@EmailBody='Malesuada nunc vel risus commodo viverra. Habitasse platea dictumst vestibulum rhoncus.',
 	@DateTimeStamp = @GetDate
 
+    update sq 
+    	set Response = 'city'
+    from dbo.Account a
+    join [dbo].[SecurityQuestion] sq 
+        on sq.AccountId = a.AccountId
+    where a.CreatedEmailAddress = 'jims@temple.edu'
+        and sq.SecurityQuestionId = 1 --In what town or city was your first full time job?
+    
+    update sq 
+    	set Response = '1234'
+    from dbo.Account a
+    join [dbo].[SecurityQuestion] sq 
+        on sq.AccountId = a.AccountId
+    where a.CreatedEmailAddress = 'jims@temple.edu'
+        and sq.SecurityQuestionId = 2 --What were the last four digits of your childhood telephone number?
+    
+    update sq 
+    	set Response = 'school'
+    from dbo.Account a
+    join [dbo].[SecurityQuestion] sq 
+        on sq.AccountId = a.AccountId
+    where a.CreatedEmailAddress = 'jims@temple.edu'
+        and sq.SecurityQuestionId = 3 --What primary school did you attend?
+    
+
 
