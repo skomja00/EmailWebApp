@@ -45,9 +45,6 @@ EXEC sp_addrolemember 'db_datawriter', 'skomja00'
 EXEC sp_addrolemember 'db_executor', 'skomja00'
 GO
 
--- Add to database owner role?  
--- Only give out if application needs a high level of privileges.
--- EXEC sp_addrolemember 'db_owner', 'skomja00'
--- GO
+
 
 

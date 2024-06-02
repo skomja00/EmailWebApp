@@ -234,164 +234,157 @@ GO
  *                 Also the user must responsd to security questions to 
  *                 help verify their identity if in the future they
  *                 need to reset their password.
+ *    Returns 
+ *                 0  if successful
+ *                 -1 if unsuccessful  
  ***************************************************************************/
-	IF (SELECT object_id('dbo.Account_Insert_SP')) is not null 
-	DROP PROCEDURE dbo.Account_Insert_SP;
+	DROP PROCEDURE IF EXISTS dbo.Account_Insert_SP;
 	GO
 	
-	CREATE PROCEDURE dbo.Account_Insert_SP
-		@UserName VARCHAR(50)='',
-		@UserAddress VARCHAR(254)='',
-		@PhoneNumber VARCHAR(50)='',
-		@CreatedEmailAddress VARCHAR(254)='',
-		@ContactEmailAddress VARCHAR(254)='',
-		@Avatar INT=0,
-		@AccountPassword VARBINARY(MAX),
-		@Active VARCHAR(5)='', 
-		@ResponseCity VARCHAR(254)= '',
-		@ResponsePhone VARCHAR(254)= '',
-		@ResponseSchool VARCHAR(254)= '',
-		@AccountRoleType VARCHAR(14) = '',
-		@DateTimeStamp DATETIME
+	CREATE PROCEDURE dbo.Account_Insert_SP (
+		@UserName             VARCHAR(50)='',
+		@UserAddress          VARCHAR(254)='',
+		@PhoneNumber          VARCHAR(50)='',
+		@CreatedEmailAddress  VARCHAR(254)='',
+		@ContactEmailAddress  VARCHAR(254)='',
+		@Avatar               INT=0,
+		@AccountPassword      VARBINARY(MAX),
+		@Active               VARCHAR(5)='', 
+		@ResponseCity         VARCHAR(254)= '',
+		@ResponsePhone        VARCHAR(254)= '',
+		@ResponseSchool       VARCHAR(254)= '',
+		@AccountRoleType      VARCHAR(14) = '',
+		@DateTimeStamp        DATETIME)
 	AS
-	BEGIN TRANSACTION
-		BEGIN
-			DECLARE @AccountId INT;
-			IF (@DateTimeStamp IS NULL ) SET @DateTimeStamp = GETDATE();
+	BEGIN TRY 
+		DECLARE @AccountId INT;
+		IF (@DateTimeStamp IS NULL ) SET @DateTimeStamp = GETDATE();
 			
-			INSERT INTO dbo.Account (UserName, 
-									UserAddress, 
-									PhoneNumber, 
-									CreatedEmailAddress, 
-									ContactEmailAddress, 
-									Avatar, 
-									AccountPassword, 
-									Active, 
+		INSERT INTO dbo.Account (UserName, 
+								UserAddress, 
+								PhoneNumber, 
+								CreatedEmailAddress, 
+								ContactEmailAddress, 
+								Avatar, 
+								AccountPassword, 
+								Active, 
+								DateTimeStamp) 
+						VALUES (@UserName,
+								@UserAddress,
+								@PhoneNumber,
+								@CreatedEmailAddress,
+								@ContactEmailAddress,
+								@Avatar,
+								@AccountPassword,
+								@Active,
+								@DateTimeStamp);
+
+		SELECT @AccountId = SCOPE_IDENTITY();
+		INSERT INTO dbo.AccountRole (AccountId, 
+									AccountRoleType, 
 									DateTimeStamp) 
-							VALUES (@UserName,
-									@UserAddress,
-									@PhoneNumber,
-									@CreatedEmailAddress,
-									@ContactEmailAddress,
-									@Avatar,
-									@AccountPassword,
-									@Active,
+							VALUES (@AccountId,
+									@AccountRoleType,
 									@DateTimeStamp);
-			IF @@ERROR = -1 GOTO On_Account_Insert_Error
 
-			-- Use the new @@IDENTITY from the new dbo.Account INSERT the Account Role
-			SELECT @AccountId = @@IDENTITY;
-			INSERT INTO dbo.AccountRole (AccountId, 
-										AccountRoleType, 
+		-- All email accounts get a 'model' set of Tags 
+		-- including 'Inbox'
+		--			'Sent'
+		--			'Flag'
+		--			'Junk'
+		--			'Trash'
+		-- Tags subsequently addeed by the user will have a 'Custom' TagType
+		INSERT INTO dbo.Tags (TagName, 
+							TagType, 
+							AccountId, 
+							DateTimeStamp) 
+							VALUES('Inbox',
+									'Model', 
+									@AccountId, 
+									@DateTimeStamp);
+			
+		INSERT INTO dbo.Tags (TagName, 
+							TagType, 
+							AccountId, 
+							DateTimeStamp) 
+					VALUES
+							('Sent',
+							'Model',
+							@AccountId,
+							@DateTimeStamp);
+			
+		INSERT INTO dbo.Tags (TagName, 
+							TagType,
+							AccountId,
+							DateTimeStamp) 
+					VALUES
+							('Flag',
+							'Model',
+							@AccountId,
+							@DateTimeStamp);
+			
+		INSERT INTO dbo.Tags (TagName,
+							TagType,
+							AccountId,
+							DateTimeStamp) 
+					VALUES
+							('Junk',
+							'Model',
+							@AccountId,
+							@DateTimeStamp);
+			
+		INSERT INTO dbo.Tags (TagName,
+							TagType,
+							AccountId,
+							DateTimeStamp) 
+					VALUES
+							('Trash',
+							'Model',
+							@AccountId,
+							@DateTimeStamp);
+			
+		DECLARE @Question VARCHAR(254);
+		SELECT @Question = 'In what town or city was your first full time job?';
+		INSERT INTO dbo.SecurityQuestion(AccountId, 
+										QuestionType,
+										Question,
+										Response,
 										DateTimeStamp) 
-								VALUES (@AccountId,
-										@AccountRoleType,
+									VALUES (@AccountId,
+										'City',
+										@Question,
+										@ResponseCity,
 										@DateTimeStamp);
-			IF @@ROWCOUNT = 0 GOTO On_Account_Insert_Error
 
-			-- All email accounts get a 'model' set of Tags 
-			-- including 'Inbox'
-			--			'Sent'
-			--			'Flag'
-			--			'Junk'
-			--			'Trash'
-			-- Tags addeed by the user will have a 'Custom' TagType
-			INSERT INTO dbo.Tags (TagName, 
-								TagType, 
-								AccountId, 
-								DateTimeStamp) 
-								VALUES('Inbox',
-										'Model', 
-										@AccountId, 
+		SELECT @Question = 'What were the last four digits of your childhood telephone number?';
+		INSERT INTO dbo.SecurityQuestion(AccountId,
+										QuestionType,
+										Question,
+										Response,
+										DateTimeStamp) 
+									VALUES (@AccountId,
+										'Phone',
+										@Question,
+										@ResponsePhone,
 										@DateTimeStamp);
-			IF @@ROWCOUNT = 0 GOTO On_Account_Insert_Error
-			
-			INSERT INTO dbo.Tags (TagName, 
-								TagType, 
-								AccountId, 
-								DateTimeStamp) 
-								VALUES('Sent',
-								'Model',
-								@AccountId,
-								@DateTimeStamp);
-			IF @@ROWCOUNT = 0 GOTO On_Account_Insert_Error
-			
-			INSERT INTO dbo.Tags (TagName, 
-								TagType,
-								AccountId,
-								DateTimeStamp) 
-								VALUES('Flag',
-								'Model',
-								@AccountId,
-								@DateTimeStamp);
-			IF @@ROWCOUNT = 0 GOTO On_Account_Insert_Error
-			
-			INSERT INTO dbo.Tags (TagName,
-								TagType,
-								AccountId,
-								DateTimeStamp) 
-								VALUES('Junk',
-								'Model',
-								@AccountId,
-								@DateTimeStamp);
-			IF @@ROWCOUNT = 0 GOTO On_Account_Insert_Error
-			
-			INSERT INTO dbo.Tags (TagName,
-								TagType,
-								AccountId,
-								DateTimeStamp) 
-								VALUES('Trash',
-								'Model',
-								@AccountId,
-								@DateTimeStamp);
-			IF @@ROWCOUNT = 0 GOTO On_Account_Insert_Error
-			
-			DECLARE @Question VARCHAR(254);
-			SELECT @Question = 'In what town or city was your first full time job?';
-			INSERT INTO dbo.SecurityQuestion(AccountId, 
-											QuestionType,
-											Question,
-											Response,
-											DateTimeStamp) 
-								       VALUES (@AccountId,
-											'City',
-											@Question,
-											@ResponseCity,
-											@DateTimeStamp);
-			IF @@ERROR = -1 GOTO On_Account_Insert_Error
 
-			SELECT @Question = 'What were the last four digits of your childhood telephone number?';
-			INSERT INTO dbo.SecurityQuestion(AccountId,
-											QuestionType,
-											Question,
-											Response,
-											DateTimeStamp) 
-								       VALUES (@AccountId,
-											'Phone',
-											@Question,
-											@ResponsePhone,
-											@DateTimeStamp);
-			IF @@ERROR = -1 GOTO On_Account_Insert_Error
-
-			SELECT @Question = 'What primary school did you attend?';
-			INSERT INTO dbo.SecurityQuestion(AccountId,
-											QuestionType,
-											Question,
-											Response,
-											DateTimeStamp) 
-								       VALUES (@AccountId,
-											'School',
-											@Question,
-											@ResponseSchool,
-											@DateTimeStamp);
-			IF @@ERROR = -1 GOTO On_Account_Insert_Error			
+		SELECT @Question = 'What primary school did you attend?';
+		INSERT INTO dbo.SecurityQuestion(AccountId,
+										QuestionType,
+										Question,
+										Response,
+										DateTimeStamp) 
+									VALUES (@AccountId,
+										'School',
+										@Question,
+										@ResponseSchool,
+										@DateTimeStamp);
 			
-			COMMIT TRANSACTION
-		END
 		RETURN 0
-		On_Account_Insert_Error: 
-			ROLLBACK TRANSACTION
-			RETURN -1
+	END TRY
+	BEGIN CATCH --On_Account_Insert_Error: 
+		RETURN -1			
+	END CATCH
 	GO
 	SET ANSI_NULLS ON
 	GO
@@ -410,13 +403,13 @@ GO
  ****************************************************************/
 	IF (SELECT object_id('dbo.Account_Security_Questions_SP')) is not null DROP PROCEDURE dbo.Account_Security_Questions_SP;
 	GO
-	CREATE PROCEDURE dbo.Account_Security_Questions_SP
+	CREATE PROCEDURE dbo.Account_Security_Questions_SP (
 		@CreatedEmailAddress VARCHAR(254)='',
 		@ResponseCity VARCHAR(254),
 		@ResponsePhone VARCHAR(254),
-		@ResponseSchool VARCHAR(254)
+		@ResponseSchool VARCHAR(254))
 	AS
-	BEGIN
+	BEGIN TRY
 		DECLARE @MatchCount INT
 		SET @MatchCount = 0
 		SELECT @MatchCount = @MatchCount + 1
@@ -441,7 +434,15 @@ GO
 			AND s.QuestionType = 'School'
 			
 		SELECT @MatchCount as NumOfCorrectResponses
-	END
+
+		RETURN 0
+
+	END TRY
+	BEGIN CATCH
+
+		RETURN -1
+
+	END CATCH
 	GO	
 	SET ANSI_NULLS ON
 	GO
@@ -455,15 +456,13 @@ GO
  *        @AccountPassword
  *
  ***************************************************************************/
-	IF (SELECT object_id('dbo.Account_Login_SP')) is not null 
-	DROP PROCEDURE dbo.Account_Login_SP;
+	DROP PROCEDURE IF EXISTS dbo.Account_Login_SP;
 	GO
-	
-	CREATE PROCEDURE dbo.Account_Login_SP
+	CREATE PROCEDURE dbo.Account_Login_SP (
 		@CreatedEmailAddress VARCHAR(254),
-		@AccountPassword VARBINARY(MAX)
+		@AccountPassword VARBINARY(MAX) )
 	AS
-	BEGIN
+	BEGIN TRY
 		SELECT 
 			Account.AccountId,
 			Account.UserName,
@@ -480,7 +479,13 @@ GO
 		JOIN dbo.AccountRole ON AccountRole.AccountId = Account.AccountId
 		WHERE CreatedEmailAddress = @CreatedEmailAddress 
 		AND AccountPassword = @AccountPassword;
-	END
+
+		RETURN @@ROWCOUNT;
+
+	END TRY
+	BEGIN CATCH
+		RETURN -1
+	END CATCH 
 	GO	
 	SET ANSI_NULLS ON
 	GO
@@ -492,23 +497,24 @@ GO
 	IF (SELECT object_id('dbo.Account_Update_Password_SP')) is not null 
 	DROP PROCEDURE dbo.Account_Update_Password_SP;
 	GO
-	CREATE PROCEDURE dbo.Account_Update_Password_SP
+	CREATE PROCEDURE dbo.Account_Update_Password_SP (
 		@CreatedEmailAddress VARCHAR(254),
-		@AccountPassword VARBINARY(MAX)
+		@AccountPassword VARBINARY(MAX) )
 	AS
-	BEGIN TRANSACTION
-		BEGIN	
-			UPDATE dbo.Account 
-			SET Account.AccountPassword = @AccountPassword
-			WHERE Account.CreatedEmailAddress = @CreatedEmailAddress
-			IF @@ERROR = -1 GOTO On_Account_Update_Password_Error
-			
-			COMMIT TRANSACTION
-		END
-		RETURN 0
-		On_Account_Update_Password_Error: 
-			ROLLBACK TRANSACTION
-			RETURN -1
+	BEGIN TRY
+		UPDATE dbo.Account 
+		SET Account.AccountPassword = @AccountPassword
+		WHERE Account.CreatedEmailAddress = @CreatedEmailAddress;
+
+		IF @@ROWCOUNT = 1
+			RETURN 1
+		ELSE 
+			RETURN -1;
+
+	END TRY
+	BEGIN CATCH --On_Account_Update_Password_Error: 
+		RETURN -1
+	END CATCH
 	GO	
 	SET ANSI_NULLS ON
 	GO
@@ -537,100 +543,95 @@ GO
 		@EmailBody VARCHAR(MAX)='',
 		@DateTimeStamp DATETIME=''
 	AS
-	BEGIN TRANSACTION
-		BEGIN
-			DECLARE @SendAccountId INT
-			SELECT @SendAccountId = AccountId 
-				FROM dbo.Account 
-				WHERE CreatedEmailAddress = @SendEmailAddress;
-			DECLARE @EmailId INT
-			DECLARE @TagsSentId INT
-			SELECT @TagsSentId = TagId 
-				FROM dbo.Tags 
-				JOIN dbo.Account ON Account.AccountId = Tags.AccountId
-								AND Tags.TagName = 'Sent'
-				WHERE Account.AccountId = @SendAccountId;
+	BEGIN TRY
+		DECLARE @SendAccountId INT
+		DECLARE @EmailId INT
+		DECLARE @TagsSentId INT
+
+		SELECT @SendAccountId = AccountId 
+			FROM dbo.Account 
+			WHERE CreatedEmailAddress = @SendEmailAddress;
+		SELECT @TagsSentId = TagId 
+			FROM dbo.Tags 
+			JOIN dbo.Account ON Account.AccountId = Tags.AccountId
+							AND Tags.TagName = 'Sent'
+			WHERE Account.AccountId = @SendAccountId;
 				
-			----do not send email unless account exists
-			--IF NOT EXISTS(SELECT *
-			--	FROM dbo.Account 
-			--	WHERE Account.CreatedEmailAddress = @RecvEmailList) 
-			--	GOTO On_Email_Send_Error
+		----do not send email unless account exists
+		--IF NOT EXISTS(SELECT *
+		--	FROM dbo.Account 
+		--	WHERE Account.CreatedEmailAddress = @RecvEmailList) 
+		--	GOTO On_Email_Send_Error
 
-			----do not allow email to Administrator type accounts
-			--IF EXISTS(SELECT *
-			--	FROM dbo.Account 
-			--	JOIN dbo.AccountRole on AccountRole.AccountId = Account.AccountId
-			--	WHERE Account.CreatedEmailAddress = @RecvEmailList
-			--	AND AccountRole.AccountRoleType = 'Administrator') 
-			--	GOTO On_Email_Send_Error
+		----do not allow email to Administrator type accounts
+		--IF EXISTS(SELECT *
+		--	FROM dbo.Account 
+		--	JOIN dbo.AccountRole on AccountRole.AccountId = Account.AccountId
+		--	WHERE Account.CreatedEmailAddress = @RecvEmailList
+		--	AND AccountRole.AccountRoleType = 'Administrator') 
+		--	GOTO On_Email_Send_Error
 
-			--create a list of recv account ids using the 
-			--semi-colon ';'separated values
-			IF (SELECT object_id(N'tempdb..#RecvEmailAccountId')) is not null 
-				DROP TABLE #RecvEmailAccountId;
-			SELECT 
-				Account.AccountId
-			INTO #RecvEmailAccountId
-			FROM STRING_SPLIT(@RecvEmailList,';') AS EmailAddress
-			JOIN dbo.Account ON Account.CreatedEmailAddress = EmailAddress.value
+		--create a list of recv account ids using the 
+		--semi-colon ';'separated values
+		DROP TABLE IF EXISTS #RecvEmailAccountId;
 
-			INSERT INTO dbo.Email
-					(AccountId,
-					RecvEmailList,
-					EmailSubject,
-					EmailBody)
-				VALUES
-					(@SendAccountId,
-					@RecvEmailList,
-					@EmailSubject,
-					@EmailBody)
-			IF @@ERROR = -1 GOTO On_Email_Send_Error
-			SET @EmailId = @@IDENTITY
+		SELECT 
+			Account.AccountId
+		INTO #RecvEmailAccountId
+		FROM STRING_SPLIT(@RecvEmailList,';') AS EmailAddress
+		JOIN dbo.Account ON Account.CreatedEmailAddress = EmailAddress.value
 
-			-- insert 'inbox' copy of email into the EmailReceipt table
-			-- for each receive email addesses in the ';' separated list
-			INSERT INTO EmailReceipt 
-					(AccountIdSend,
-					AccountIdRecv,
-					EmailId,
-					TagId,
-					EmailFlag)
-				SELECT
-					@SendAccountId,
-					RecvEmail.AccountId,
-					@EmailId,
-					(SELECT TagId
-						FROM dbo.Tags 
-						WHERE Tags.AccountId = Account.AccountId
-						AND Tags.TagName = 'Inbox'),
-					'No'
-				FROM #RecvEmailAccountId RecvEmail
-				JOIN dbo.Account ON Account.AccountId = RecvEmail.AccountId
+		INSERT INTO dbo.Email
+				(AccountId,
+				RecvEmailList,
+				EmailSubject,
+				EmailBody)
+			VALUES
+				(@SendAccountId,
+				@RecvEmailList,
+				@EmailSubject,
+				@EmailBody)
 
-			IF @@ERROR = -1 GOTO On_Email_Send_Error
+		SET @EmailId = SCOPE_IDENTITY();
 
-			-- insert 'sent' copy of email into the EmailReceipt 
-			INSERT INTO EmailReceipt 
-					(AccountIdSend,
-					AccountIdRecv,
-					EmailId,
-					TagId,
-					EmailFlag)
-				SELECT
-					@SendAccountId,
-					@SendAccountId,
-					@EmailId,
-					@TagsSentId,
-					'No'
-			IF @@ERROR = -1 GOTO On_Email_Send_Error
+		-- insert 'inbox' copy of email into the EmailReceipt table
+		-- for each receive email addesses in the ';' separated list
+		INSERT INTO EmailReceipt 
+				(AccountIdSend,
+				AccountIdRecv,
+				EmailId,
+				TagId,
+				EmailFlag)
+			SELECT
+				@SendAccountId,
+				RecvEmail.AccountId,
+				@EmailId,
+				(SELECT TagId
+					FROM dbo.Tags 
+					WHERE Tags.AccountId = Account.AccountId
+					AND Tags.TagName = 'Inbox'),
+				'No'
+			FROM #RecvEmailAccountId RecvEmail
+			JOIN dbo.Account ON Account.AccountId = RecvEmail.AccountId
 
-			COMMIT TRANSACTION
-		END
-		RETURN 0
-		On_Email_Send_Error: 
-			ROLLBACK TRANSACTION
-			RETURN -1
+		-- insert 'sent' copy of email into the EmailReceipt 
+		INSERT INTO EmailReceipt 
+				(AccountIdSend,
+				AccountIdRecv,
+				EmailId,
+				TagId,
+				EmailFlag)
+			SELECT
+				@SendAccountId,
+				@SendAccountId,
+				@EmailId,
+				@TagsSentId,
+				'No'
+
+	END TRY
+	BEGIN CATCH --On_Email_Send_Error
+		RETURN -1
+	END CATCH 
 	GO	
 /***************************************************************************
  *    Description: Procedure to SELECT emails for the 
@@ -649,7 +650,7 @@ GO
 		@CreatedEmailAddress VARCHAR(254),
 		@TagName VARCHAR(12)
 	AS
-	BEGIN
+	BEGIN TRY
 		SELECT  Account.AccountId,
 				EmailReceipt.AccountIdSend,
 				Account.UserName,
@@ -677,8 +678,17 @@ GO
 		WHERE Account.CreatedEmailAddress = @CreatedEmailAddress
 		-- LIKE will allow selecting using a wildcard.
 		--(ie. @TagName = '%' returns emails from for the Account in ALL folders) 
-		AND Tags.TagName LIKE @TagName
-	END
+		AND Tags.TagName LIKE @TagName;
+
+		RETURN 0;
+
+	END TRY
+	BEGIN CATCH
+
+		RETURN -1;
+
+	END CATCH
+
 	GO
 /***************************************************************************
  *    Description: Procedure to SELECT sent emails
@@ -687,6 +697,9 @@ GO
  *        @CreatedEmailAddress
  *        @TagName
  *
+ *
+ *        TODO: Fix bug where sent email bug select 2x
+
  ***************************************************************************/	
 	IF (SELECT object_id('dbo.Get_Sent_Email_SP')) is not null 
 	DROP PROCEDURE dbo.Get_Sent_Email_SP;
@@ -696,11 +709,12 @@ GO
 		@CreatedEmailAddress VARCHAR(254),
 		@TagName VARCHAR(12)='Sent'
 	AS
-	BEGIN
+	BEGIN TRY
 		DECLARE @AccountId INT;
+
 		SELECT @AccountId = Account.AccountId
 		FROM dbo.Account
-		WHERE Account.CreatedEmailAddress = @CreatedEmailAddress
+		WHERE Account.CreatedEmailAddress = @CreatedEmailAddress;
 
 		SELECT  
 				Account.AccountId,
@@ -717,8 +731,16 @@ GO
 				Email.DateTimeStamp
 		FROM dbo.Email 
 		JOIN dbo.Account ON Account.AccountId = Email.AccountId
-		WHERE Email.AccountId = @AccountId
-	END
+		WHERE Email.AccountId = @AccountId;
+
+		RETURN 0;
+
+	END TRY
+	BEGIN CATCH
+
+		RETURN -1;
+
+	END CATCH
 	GO
 /***************************************************************************
  *    Description: Procedure to SELECT sent emails with
@@ -728,14 +750,13 @@ GO
  *        @TagName
  *
  ***************************************************************************/	
-	IF (SELECT object_id('dbo.Get_Email_With_Tag_SP')) is not null 
-	DROP PROCEDURE dbo.Get_Email_With_Tag_SP;
+	DROP PROCEDURE IF EXISTS dbo.Get_Email_With_Tag_SP;
 	GO
 	
 	CREATE PROCEDURE dbo.Get_Email_With_Tag_SP
 		@TagName VARCHAR(12)=''
 	AS
-	BEGIN
+	BEGIN TRY
 		SELECT  EmailReceipt.EmailReceiptId,
 				Email.EmailId,
 				Email.AccountId AS AccountIdSend,
@@ -753,7 +774,15 @@ GO
 		JOIN dbo.Email on Email.EmailId = EmailReceipt.EmailId
 		JOIN dbo.Tags ON Tags.TagId = EmailReceipt.TagId
 		WHERE Tags.TagName = @TagName
-	END
+
+		RETURN 0;
+
+	END TRY
+	BEGIN CATCH
+
+		RETURN -1;
+
+	END CATCH
 	GO
 /***************************************************************************
  *    Description: Procedure to SELECT all emails for all Accounts
@@ -763,12 +792,12 @@ GO
  *        @TagName
  *
  ***************************************************************************/	
-	IF (SELECT object_id('dbo.Get_Accounts_With_Flagged_Email_SP')) is not null DROP PROCEDURE dbo.Get_Accounts_With_Flagged_Email_SP;
+	DROP PROCEDURE IF EXISTS dbo.Get_Accounts_With_Flagged_Email_SP;
 	GO
 	
 	CREATE PROCEDURE dbo.Get_Accounts_With_Flagged_Email_SP
 	AS
-	BEGIN
+	BEGIN TRY
 		SELECT  DISTINCT
 				Account.AccountId,
 				Account.UserName,
@@ -782,7 +811,10 @@ GO
 		JOIN dbo.Tags ON Tags.TagId = EmailReceipt.TagId
 		JOIN dbo.Account on Account.AccountId = Email.AccountId
 		WHERE Tags.TagName = 'Flag'
-	END
+	END TRY
+	BEGIN CATCH 
+		RETURN -1;
+	END CATCH
 	GO
 /***************************************************************************
  *    Description: Procedure to create a user-defined tag. 
@@ -792,46 +824,58 @@ GO
  *        @TagName
  *
  ***************************************************************************/	
-	IF (SELECT object_id('dbo.Create_Tag_SP')) is not null 
-	DROP PROCEDURE dbo.Create_Tag_SP;
+	DROP PROCEDURE IF EXISTS dbo.Create_Tag_SP;
 	GO
 	
 	CREATE PROCEDURE dbo.Create_Tag_SP
 		@CreatedEmailAddress VARCHAR(254)='', --1 byte per char + 2 bytes to hold length
 		@TagName VARCHAR(12)=''
 	AS
-	BEGIN TRANSACTION
-		BEGIN
-			DECLARE @AccountId INT
-			SELECT @AccountId = AccountId 
-				FROM dbo.Account 
-				WHERE CreatedEmailAddress = @CreatedEmailAddress;
-			DECLARE @Now DATETIME
-			SET @Now = GETDATE()
-			-- if the tag already exists rollback and return -1
-			IF (EXISTS(SELECT * 
-						FROM dbo.Tags 
-						WHERE Tags.AccountId = @AccountId
-							AND Tags.TagName = @TagName))
-				GOTO On_Create_Tag_Error
+	DECLARE @ErrorMessage NVARCHAR(4000);
+    DECLARE @ErrorSeverity INT;
+    DECLARE @ErrorState INT;
+	BEGIN TRY
 
-			INSERT INTO dbo.Tags 
-					(Tags.TagName,
-					Tags.TagType,
-					Tags.AccountId,
-					Tags.DateTimeStamp)
-			values (@TagName,
-					'Custom',
-					@AccountId,
-					@Now)
-			IF @@ERROR = -1 GOTO On_Create_Tag_Error
-		
-			COMMIT TRANSACTION
+		DECLARE @AccountId INT
+		SELECT @AccountId = AccountId 
+			FROM dbo.Account 
+			WHERE CreatedEmailAddress = @CreatedEmailAddress;
+		DECLARE @Now DATETIME
+		SET @Now = GETDATE()
+
+		-- if the tag already exists return -1
+		IF (EXISTS(SELECT * 
+					FROM dbo.Tags 
+					WHERE Tags.AccountId = @AccountId
+						AND Tags.TagName = @TagName))
+		BEGIN
+				SELECT 
+					@ErrorMessage = N'Tag already exists'
+					,@ErrorSeverity = 12
+					,@ErrorState = 1;
+				RAISERROR (@ErrorMessage, 
+					@ErrorSeverity, 
+					@ErrorState); 
 		END
-		RETURN 0
-		On_Create_Tag_Error: 
-			ROLLBACK TRANSACTION
-			RETURN -1
+
+		INSERT INTO dbo.Tags 
+				(Tags.TagName,
+				Tags.TagType,
+				Tags.AccountId,
+				Tags.DateTimeStamp)
+		VALUES (@TagName,
+				'Custom',
+				@AccountId,
+				@Now);
+
+		RETURN 0;
+
+	END TRY
+	BEGIN CATCH --On_Create_Tag_Error: 
+
+		RETURN -1
+
+	END CATCH
 	GO	
 /***************************************************************************
  *    Description: Procedure to SELECT user-defined custom tags. 
@@ -841,15 +885,14 @@ GO
  *	      @TagType 
  *
  ***************************************************************************/	
-	IF (SELECT object_id('dbo.Get_Tags_SP')) is not null 
-	DROP PROCEDURE dbo.Get_Tags_SP;
+	DROP PROCEDURE IF EXISTS dbo.Get_Tags_SP;
 	GO
 	
 	CREATE PROCEDURE dbo.Get_Tags_SP
 		@CreatedEmailAddress VARCHAR(254)='', --1 byte/char + 2 for length
 		@TagType VARCHAR(6)=''
 	AS
-		BEGIN
+		BEGIN TRY
 			DECLARE @AccountId INT,
 					@Model VARCHAR(6),
 					@Custom VARCHAR(6)
@@ -882,8 +925,13 @@ GO
 				TagName 
 			FROM dbo.Tags 
 			WHERE Tags.AccountId = @AccountId
-				AND Tags.TagType in (SELECT @Model UNION SELECT @Custom)
-		END
+				AND Tags.TagType IN (SELECT @Model UNION SELECT @Custom)
+		END TRY
+		BEGIN CATCH
+
+			RETURN -1;
+
+		END CATCH
 	GO
 /***************************************************************************
  *    Description: Procedure to UPDATE EmailRecipt tag. 

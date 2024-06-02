@@ -10,6 +10,7 @@ using System.Security.Cryptography;
 using System.IO;
 using Newtonsoft.Json;
 using System.Net;
+using EmailLibrary.AccountService;
 
 namespace EmailLibrary.Model
 {
@@ -23,14 +24,8 @@ namespace EmailLibrary.Model
 
         DataSet acctDS;
         DataSet flaggedAccountsDS;
-        ////Create a web service proxy object
-        ////using the AccountWeb.asmx page
-        //AccountService.AccountWeb pxy = new AccountService.AccountWeb();
 
-        ////Create an object of the of the AccountService.Account class
-        ////using the AccountService and WSDL
-        //AccountService.Account objAccount = new AccountService.Account();
-
+        private string data;
         private int accountId;
         private string userName;
         private string userAddress;
@@ -48,72 +43,101 @@ namespace EmailLibrary.Model
         private static Byte[] key =    { 250, 101, 018, 076, 045, 135, 207, 118, 004, 171, 003, 168, 202, 241, 037, 199 };
         private static Byte[] vector = { 146, 064, 191, 111, 023, 003, 113, 119, 231, 121, 252, 112, 079, 032, 114, 156 };
 
-        public Account LogIn(string theCreatedEmailAddress, Byte[] theAccountPassword)
+        public int LogIn()
         {
+            try
             {
-                WebRequest request = WebRequest.Create(baseUrl + "/Account/LogIn?theLoginEmail=" + theCreatedEmailAddress +
-                                                                                "&theLoginPass=" + theAccountPassword);
+                string json = JsonConvert.SerializeObject(this, Formatting.Indented);
+
+                WebRequest request = WebRequest.Create(baseUrl + "/Account/LogIn");
+                request.Method = "POST";
+                request.ContentLength = json.Length;
+                request.ContentType = "application/json";
+
+                StreamWriter writer = new StreamWriter(request.GetRequestStream());
+                writer.Write(json);
+                writer.Flush();
+                writer.Close();
+
+                WebResponse response = request.GetResponse();
+                Stream stream = response.GetResponseStream();
+                StreamReader reader = new StreamReader(stream);
+                json = reader.ReadToEnd();
+                reader.Close();
+                response.Close();
+                Account acct = JsonConvert.DeserializeObject<Account>(json);
+
+                if (acct.accountPassword != null)
+                {
+                    InitializeThis(acct);
+                    return 1;
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+        public DataSet GetAccountsWithFlaggedEmail()
+        {
+            try
+            {
+                WebRequest request = WebRequest.Create(baseUrl + "/Account/FlaggedEmail");
+                request.Method = "GET";
+
                 WebResponse response = request.GetResponse();
                 Stream stream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(stream);
                 String json = reader.ReadToEnd();
                 reader.Close();
                 response.Close();
-                Account acct =  JsonConvert.DeserializeObject<Account>(json);
-                
-                if (acct.AccountId > 0)
-                {
-                    InitializeThis(acct);
-                }
+                flaggedAccountsDS = JsonConvert.DeserializeObject<DataSet>(json);
 
-                return this;
+                return flaggedAccountsDS;
+            }
+            catch (Exception ex)
+            {
+                return null;
             }
         }
-        public DataSet GetAccountsWithFlaggedEmail()
+        public int BanUnban()
         {
-            WebRequest request = WebRequest.Create(baseUrl + "/Account/FlaggedEmail");
-            WebResponse response = request.GetResponse();
-            Stream stream = response.GetResponseStream();
-            StreamReader reader = new StreamReader(stream);
-            String json = reader.ReadToEnd();
-            reader.Close();
-            response.Close();
-            flaggedAccountsDS = JsonConvert.DeserializeObject<DataSet>(json);
+            try
+            {
+                string json = JsonConvert.SerializeObject(this, Formatting.Indented);
 
-            return flaggedAccountsDS;
+                WebRequest request = WebRequest.Create(baseUrl + "/Account/BanUnban");
+                request.Method = "PUT";
+                request.ContentLength = json.Length;
+                request.ContentType = "application/json";
+
+                StreamWriter writer = new StreamWriter(request.GetRequestStream());
+                writer.Write(json);
+                writer.Flush();
+                writer.Close();
+
+                WebResponse response = request.GetResponse();
+                Stream stream = response.GetResponseStream();
+                StreamReader reader = new StreamReader(stream);
+                data = reader.ReadToEnd();
+                reader.Close();
+                response.Close();
+
+                return Int32.Parse(data);
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+
         }
-        //public int BanUnban()
-        //{
-        //    this.AccountId = this.AccountId;
-        //    this.Active = this.Active;
-
-        //    //int result = pxy.BanUnBan(this);
-
-        //    return result;
-        //}
-        //public int CreateAccount ()
-        //{
-        //    this.AccountId = this.AccountId;
-        //    this.UserName = this.UserName;
-        //    this.UserAddress = this.UserAddress;
-        //    this.PhoneNumber = this.PhoneNumber;
-        //    this.CreatedEmailAddress = this.CreatedEmailAddress;
-        //    this.ContactEmailAddress = this.ContactEmailAddress;
-        //    this.Avatar = this.Avatar;
-        //    this.AccountPassword = this.AccountPassword;
-        //    this.Active = this.Active;
-        //    this.AccountRoleType = this.AccountRoleType;
-        //    this.SecurityQuestionCity = this.SecurityQuestionCity;
-        //    this.SecurityQuestionPhone = this.SecurityQuestionPhone;
-        //    this.SecurityQuestionSchool = this.SecurityQuestionSchool;
-
-        //    int returnValue = pxy.CreateAccount(this);
-
-        //    return returnValue;
-        //}
         public int SecurityQuestions()
         {
-            string data;
+
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
 
             try
@@ -134,34 +158,89 @@ namespace EmailLibrary.Model
                 data = reader.ReadToEnd();
                 reader.Close();
                 response.Close();
+
+                return Int32.Parse(data);
             }
             catch (Exception ex)
             {
                 return 0;
             }
-
-            return Int32.Parse(data);
         }
-        /// <summary>
-        /// Execute the TP_Account_Update_Password_SP stored procedure to update the AccountPassword
-        /// </summary>
-        /// <param name="theCreatedEmailAddress"></param>
-        /// <param name="thePassword"></param>
-        /// <returns>Integer number of rows affected by the update, or -1 for an exception</returns>
-        //public int UpdatePassword()
-        //{
-        //    this.CreatedEmailAddress = this.CreatedEmailAddress;
-        //    this.AccountPassword = this.AccountPassword;
+        // <summary>
+        // Execute the TP_Account_Update_Password_SP stored procedure to update the AccountPassword
+        // </summary>
+        // <param name = "theCreatedEmailAddress" ></param >
+        // <param name = "thePassword"></param>
+        // <returns>Integer number of rows affected by the update, or -1 for an exception</returns>
+        public int UpdatePassword(Account theAccount)
+        {
+            string json = JsonConvert.SerializeObject(this, Formatting.Indented);
 
-        //    int returnValue = pxy.UpdatePassword(this);
+            try
+            {
+                WebRequest request = WebRequest.Create(baseUrl + "/Account/UpdatePassword");
+                request.Method = "PUT";
+                request.ContentLength = json.Length;
+                request.ContentType = "application/json";
 
-        //    return returnValue;
-        //}
-        /// <summary>
-        /// Encrypt the given password and return an Encrypted Byte[]
-        /// </summary>
-        /// <param name="thePassword"></param>
-        /// <returns></returns>
+                StreamWriter writer = new StreamWriter(request.GetRequestStream());
+                writer.Write(json);
+                writer.Flush();
+                writer.Close();
+
+                WebResponse response = request.GetResponse();
+                Stream stream = response.GetResponseStream();
+                StreamReader reader = new StreamReader(stream);
+                data = reader.ReadToEnd();
+                reader.Close();
+                response.Close();
+
+                return Int32.Parse(data);
+
+            }
+            catch (Exception ex) 
+            {
+                return -1;
+            }
+        }
+        public int CreateAccount()
+        {
+            string json = JsonConvert.SerializeObject(this, Formatting.Indented);
+
+            try
+            {
+                WebRequest request = WebRequest.Create(baseUrl + "/Account/CreateAccount");
+                request.Method = "POST";
+                request.ContentLength = json.Length;
+                request.ContentType = "application/json";
+
+                StreamWriter writer = new StreamWriter(request.GetRequestStream());
+                writer.Write(json);
+                writer.Flush();
+                writer.Close();
+
+                WebResponse response = request.GetResponse();
+                Stream stream = response.GetResponseStream();
+                StreamReader reader = new StreamReader(stream);
+                data = reader.ReadToEnd();
+                reader.Close();
+                response.Close();
+
+                return Int32.Parse(data);
+
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+        // <summary>
+        // Encrypt the given password and return an Encrypted Byte[]
+        // </summary>
+        // <param name = "thePassword" ></ param >
+        // < returns >
+        // Byte[]
+        // </ returns >
         public static Byte[] Encrypt(string thePassword)
         {
             UTF8Encoding encoder = new UTF8Encoding(); // used to convert bytes to characters, and back
@@ -265,6 +344,11 @@ namespace EmailLibrary.Model
             get { return createdEmailAddress; }
             set { createdEmailAddress = value; }
         }
+        public Byte[] AccountPassword
+        {
+            get { return accountPassword; }
+            set { accountPassword = value; }
+        }
         public String ContactEmailAddress
         {
             get { return contactEmailAddress; }
@@ -274,11 +358,6 @@ namespace EmailLibrary.Model
         {
             get { return avatar; }
             set { avatar = value; }
-        }
-        public Byte[] AccountPassword
-        {
-            get { return accountPassword; }
-            set { accountPassword = value; }
         }
         public String Active
         {

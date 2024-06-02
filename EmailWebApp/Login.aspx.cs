@@ -6,6 +6,7 @@ using Microsoft.Data.SqlClient;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using EmailLibrary.Model;
+using System.Text;
 
 
 namespace EmailWebApp
@@ -26,8 +27,9 @@ namespace EmailWebApp
                 objCookie = Request.Cookies["CIS3342_Email"];
                 if (objCookie != null)
                 {
-                    Byte[] accountPassword = Convert.FromBase64String(objCookie["AccountPassword"]);
-                    LogIn(objCookie["CreatedEmailAddress"], accountPassword);
+                    Account account = new Account();
+                    account.AccountPassword = Encoding.UTF8.GetBytes(objCookie["AccountPassword"]);
+                    account.LogIn();
                     switch (Session["AccountRoleType"].ToString())
                     {
                         case "User":
@@ -44,67 +46,66 @@ namespace EmailWebApp
         {
             Response.Redirect("CreateAcct.aspx");
         }
-        protected void btnLogin_Click(object sender, EventArgs e)
-        {
-            if (txtEmail.Text != null && txtPass.Text != null)
-            {
-                Byte[] accountPassword = Account.Encrypt(txtPass.Text);
-                LogIn(txtEmail.Text, accountPassword);
-            }
-        }
         /// <summary>
         /// Call Account.LogIn() to verify the login credentials.
         /// If the account is banned/inactive alert the user. 
         /// Otherwise store the encrypted credentials in a cookie when remember me is checked.
         /// Redirect to either the Account or Admin pages based on the AccountRoleType
         /// </summary>
-        private void LogIn(string theCreatedEmailAddress, Byte[] theAccountPassword)
+        protected void btnLogin_Click(object sender, EventArgs e)
         {
-           account.LogIn(theCreatedEmailAddress, theAccountPassword);
-           if (account.AccountId > 0)
+            if (txtEmail.Text != null && txtPass.Text != null)
             {
-                if (account.Active == "no")
+                Account account = new Account();
+                account.AccountPassword = Account.Encrypt(txtPass.Text);
+                account.CreatedEmailAddress = txtEmail.Text;
+                int loginReturnCode = account.LogIn();
+                if (loginReturnCode == 1)
                 {
-                    Response.Write("<script>alert('Your account is inactive. Please contact the administrator.')</script>");
+                    if (account.Active == "no")
+                    {
+                        Response.Write("<script>alert('Your account is banned. Please contact the administrator.')</script>");
+                    }
+                    else
+                    {
+                        UpdateSession(account);
+                        if (chkRemember.Checked)
+                        {
+                            CreateCookie(account);
+                        }
+                        switch (account.AccountRoleType)
+                        {
+                            case "User":
+                                Response.Redirect("AccountClient.aspx");
+                                break;
+                            case "Administrator":
+                                Response.Redirect("AdminClient.aspx");
+                                break;
+                        }
+                    }
                 }
                 else
                 {
-                    UpdateSession();
-                    if (chkRemember.Checked)
-                    {
-                        CreateCookie(account.CreatedEmailAddress, theAccountPassword);
-                    }
-                    switch (account.AccountRoleType)
-                    {
-                        case "User":
-                            Response.Redirect("AccountClient.aspx");
-                            break;
-                        case "Administrator":
-                            Response.Redirect("AdminClient.aspx");
-                            break;
-                    }
+                    Response.Write("<script>alert('Login failed. Please check your credentials.')</script>");
                 }
-            }
-            else
-            {
-                Response.Write("<script>alert('Login failed. Please check your credentials.')</script>");
             }
         }
         /// <summary>
         /// Store the logged in user Account object in the Session to be available for any other page
         /// </summary>
-        private void UpdateSession ()
+        private void UpdateSession (Account theAccount)
         {
-            Session["AccountId"] = account.AccountId;
-            Session["UserName"] = account.UserName;
-            Session["UserAddress"] = account.UserAddress;
-            Session["PhoneNumber"] = account.PhoneNumber;
-            Session["CreatedEmailAddress"] = account.CreatedEmailAddress;
-            Session["ContactEmailAddress"] = account.ContactEmailAddress;
-            Session["Avatar"] = account.Avatar;
-            Session["Active"] = account.Active;
-            Session["DateTimeStamp"] = account.DateTimeStamp;
-            Session["AccountRoleType"] = account.AccountRoleType;
+            Session["AccountId"] = theAccount.AccountId;
+            Session["UserName"] = theAccount.UserName;
+            Session["UserAddress"] = theAccount.UserAddress;
+            Session["PhoneNumber"] = theAccount.PhoneNumber;
+            Session["CreatedEmailAddress"] = theAccount.CreatedEmailAddress;
+            Session["ContactEmailAddress"] = theAccount.ContactEmailAddress;
+            Session["AccountPassword"] = Convert.ToBase64String(theAccount.AccountPassword);
+            Session["Avatar"] = theAccount.Avatar;
+            Session["Active"] = theAccount.Active;
+            Session["DateTimeStamp"] = theAccount.DateTimeStamp;
+            Session["AccountRoleType"] = theAccount.AccountRoleType;
         }
         /// <summary>
         /// Write the encrypted password to a cookie if remember me is checked. 
@@ -112,12 +113,12 @@ namespace EmailWebApp
         /// </summary>
         /// <param name="theCreatedEmailAddress"></param>
         /// <param name="theAccountPassword"></param>
-        private void CreateCookie(string theCreatedEmailAddress, Byte[] theAccountPassword)
+        private void CreateCookie(Account theAccount)
         {
             HttpCookie myCookie = new HttpCookie("CIS3342_Email");
             myCookie.Values["Name"] = "CIS3342_Email";
-            myCookie.Values["CreatedEmailAddress"] = theCreatedEmailAddress;
-            myCookie.Values["AccountPassword"] = Convert.ToBase64String(theAccountPassword);
+            myCookie.Values["CreatedEmailAddress"] = theAccount.CreatedEmailAddress;
+            myCookie.Values["AccountPassword"] = Convert.ToBase64String(theAccount.AccountPassword);
             DateTime expires = new DateTime();
             expires = DateTime.Now.AddMonths(1);
             myCookie.Expires = expires;

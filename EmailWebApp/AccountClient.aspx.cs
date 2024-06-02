@@ -391,7 +391,7 @@ namespace EmailWebApp
                 }
                 else
                 {
-                    Response.Write("<script>alert('Could not create the tag. Please check your input.')</script>");
+                    Response.Write("<script>alert('Could not create the folder. Please check your input.')</script>");
                 }
             } 
             else

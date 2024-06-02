@@ -25,10 +25,10 @@ namespace EmailWebApp
         protected void Page_Load(object sender, EventArgs e)
         {
             LoadModalContent();
-            if (!IsPostBack)
+            if (!IsPostBack)    
             {
                 lblNavUserName.Text = Session["UserName"].ToString();
-                ArrayList arrayListAvatar = (ArrayList)Application["arrayListAvatar"];
+                ArrayList arrayListAvatar = (ArrayList) Application["arrayListAvatar"];
 
                 //ChangeUrlHrefValue (string theAttribute, string theStringToSearch, string theNewStringValue)
                 string newUrlHref = ChangeUrlHrefValue("href", svgAvatar.InnerText, "Images/" + arrayListAvatar[Convert.ToInt32(Session["Avatar"])] + "#Capa_1");
@@ -42,7 +42,7 @@ namespace EmailWebApp
                 {
                     Image img = (Image)gvAccounts.Rows[i].Cells[1].FindControl("gvAccountsAvatar");
                     row = accountDS.Tables[0].Rows[i];
-                    img.ImageUrl = "Images/" + arrayListAvatar[(int)row.ItemArray[2]];
+                    img.ImageUrl = "Images/" + arrayListAvatar[Convert.ToInt32(row.ItemArray[2])];
                 }
                 gvFlaggedEmails.DataSource = email.GetEmailWithTag("Flag");
                 gvFlaggedEmails.DataKeyNames = gvFlaggedEmailsDataKeyNames;
@@ -80,7 +80,7 @@ namespace EmailWebApp
                 {
                     acct.AccountId = Convert.ToInt32(gvAccounts.DataKeys[i].Values["AccountId"]);
                     acct.Active = "no";
-                    //acct.BanUnban();
+                    acct.BanUnban();
                 }
             }
             DataSet accountDS = acct.GetAccountsWithFlaggedEmail();
@@ -92,7 +92,7 @@ namespace EmailWebApp
             {
                 Image img = (Image)gvAccounts.Rows[i].Cells[1].FindControl("gvAccountsAvatar");
                 row = accountDS.Tables[0].Rows[i];
-                img.ImageUrl = "Images/" + arrayListAvatar[(int)row.ItemArray[2]];
+                img.ImageUrl = "Images/" + arrayListAvatar[Convert.ToInt32(row.ItemArray[2])];
             }
         }
 
@@ -105,7 +105,7 @@ namespace EmailWebApp
                 {
                     acct.AccountId = Convert.ToInt32(gvAccounts.DataKeys[i].Values["AccountId"]);
                     acct.Active = "yes";
-                    //acct.BanUnban();
+                    acct.BanUnban();
                 }
             }
             DataSet accountDS = acct.GetAccountsWithFlaggedEmail();
@@ -117,7 +117,7 @@ namespace EmailWebApp
             {
                 Image img = (Image)gvAccounts.Rows[i].Cells[1].FindControl("gvAccountsAvatar");
                 row = accountDS.Tables[0].Rows[i];
-                img.ImageUrl = "Images/" + arrayListAvatar[(int)row.ItemArray[2]];
+                img.ImageUrl = "Images/" + arrayListAvatar[Convert.ToInt32(row.ItemArray[2])];
             }
         }
         protected void chkSelectEmail_CheckedChanged(object sender, EventArgs e)

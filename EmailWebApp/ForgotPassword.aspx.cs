@@ -71,15 +71,15 @@ namespace EmailWebApp
                 Account acct = new Account();
                 acct.AccountPassword = Account.Encrypt(txtNewPassword.Text);
                 acct.CreatedEmailAddress = txtEmailAddress.Text;
-                //int returnValue = acct.UpdatePassword();
-                //if (returnValue > 0)
-                //{
-                //    Response.Redirect("Login.aspx");
-                //}
-                //else
-                //{
-                //    Response.Write("<script>alert('Problem updating password in the database. Please contact the HelpDesk.')</script>");
-                //}
+                int returnValue = acct.UpdatePassword(acct);
+                if (returnValue > 0)
+                {
+                    Response.Redirect("Login.aspx");
+                }
+                else
+                {
+                    Response.Write("<script>alert('Problem updating password in the database. Please contact the HelpDesk.')</script>");
+                }
             }
         }
         private void MakeVisible(string theContent)

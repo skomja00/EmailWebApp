@@ -279,7 +279,7 @@
             To modify move field declaration from designer file to code-behind file.
             </remarks>
         </member>
-        <member name="M:EmailWebApp.Login.LogIn(System.String,System.Byte[])">
+        <member name="M:EmailWebApp.Login.btnLogin_Click(System.Object,System.EventArgs)">
             <summary>
             Call Account.LogIn() to verify the login credentials.
             If the account is banned/inactive alert the user. 
@@ -287,12 +287,12 @@
             Redirect to either the Account or Admin pages based on the AccountRoleType
             </summary>
         </member>
-        <member name="M:EmailWebApp.Login.UpdateSession">
+        <member name="M:EmailWebApp.Login.UpdateSession(EmailLibrary.Model.Account)">
             <summary>
             Store the logged in user Account object in the Session to be available for any other page
             </summary>
         </member>
-        <member name="M:EmailWebApp.Login.CreateCookie(System.String,System.Byte[])">
+        <member name="M:EmailWebApp.Login.CreateCookie(EmailLibrary.Model.Account)">
             <summary>
             Write the encrypted password to a cookie if remember me is checked. 
             The user will either login manually or the cookie will be used to login.
