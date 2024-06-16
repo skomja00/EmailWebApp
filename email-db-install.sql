@@ -10,7 +10,7 @@ use sp21_3342_tun49199;
 
 	Changes Made: 
     tun49199 - 2021-03-03 - Original code.
-
+	skomja00 - 2024-06-16 - Code refactor
 	
 	Testing Scripts:
 
@@ -57,33 +57,51 @@ GO
  ***************************************************************************/
 	IF (SELECT object_id('Email_Account_FK')) is not null 
 	ALTER TABLE dbo.Email DROP CONSTRAINT Email_Account_FK;
-
-	IF (SELECT object_id('EmailReceipt_PK')) is not null 
-	ALTER TABLE dbo.EmailReceipt DROP CONSTRAINT EmailReceipt_PK;
+	GO
+	
+	IF (SELECT object_id('EmailReceipt_Tags_FK')) is not null 
+	ALTER TABLE dbo.EmailReceipt DROP CONSTRAINT EmailReceipt_Tags_FK;
+	GO
 
 	IF (SELECT object_id('EmailReceipt_Email_FK')) is not null 
 	ALTER TABLE dbo.EmailReceipt DROP CONSTRAINT EmailReceipt_Email_FK;
+	GO
 
-	IF (SELECT object_id('EmailReceipt_Tags_FK')) is not null 
-	ALTER TABLE dbo.EmailReceipt DROP CONSTRAINT EmailReceipt_Tags_FK;
-	
+	IF (SELECT object_id('EmailReceipt_Account_FK')) is not null 
+	ALTER TABLE dbo.EmailReceipt DROP CONSTRAINT EmailReceipt_Account_FK;
+	GO
+
 	IF (SELECT object_id('Tags_PK')) is not null 
 	ALTER TABLE dbo.Tags DROP CONSTRAINT Tags_PK;
+	GO
 	
 	IF (SELECT object_id('Tags_Account_FK')) is not null 
 	ALTER TABLE dbo.Tags DROP CONSTRAINT Tags_Account_FK;
+	GO
+
+	IF (SELECT object_id('Tags_Account_FK')) is not null 
+	ALTER TABLE dbo.Tags DROP CONSTRAINT Tags_EmailReceipt_FK;
+	GO
+
+	IF (SELECT object_id('Tags_EmailReceipt_PK')) is not null 
+	ALTER TABLE dbo.Tags DROP CONSTRAINT Tags_EmailReceipt_PK;
+	GO
 	
 	IF (SELECT object_id('AccountRole_PK')) is not null 
 	ALTER TABLE dbo.AccountRole DROP CONSTRAINT AccountRole_PK;
+	GO
 	
 	IF (SELECT object_id('Account_PK')) is not null 
 	ALTER TABLE dbo.Account DROP CONSTRAINT Account_PK;
+	GO
 	
 	IF (SELECT object_id('SecurityQuestion_PK')) is not null 
 	ALTER TABLE dbo.SecurityQuestion DROP CONSTRAINT SecurityQuestion_PK;
+	GO
 	
 	IF (SELECT object_id('Email_PK')) is not null 
 	ALTER TABLE dbo.Email DROP CONSTRAINT Email_PK;
+	GO
 
 /****************************************************************************
  *    Drop tables to be recreated with starter data                         
@@ -99,18 +117,43 @@ GO
 	
 	IF (SELECT object_id('dbo.Email')) is not null 
 	DROP TABLE dbo.Email;
-	
+
+	IF (SELECT object_id('dbo.Tags')) is not null 
+	DROP TABLE dbo.Tags;	
+
 	IF (SELECT object_id('dbo.EmailReceipt')) is not null 
 	DROP TABLE dbo.EmailReceipt;
-	
-	IF (SELECT object_id('dbo.Tags')) is not null 
-	DROP TABLE dbo.Tags;
+
+/***************************************************************************
+ *    Create Account table                          
+ ***************************************************************************/
+	CREATE TABLE dbo.Account ( 
+		AccountId BIGINT IDENTITY(1,1), 
+		EmailReceiptId BIGINT,
+		UserName VARCHAR(50),
+		UserAddress VARCHAR(254),
+		PhoneNumber VARCHAR(50),
+		CreatedEmailAddress VARCHAR(254) UNIQUE,
+		ContactEmailAddress VARCHAR(254),
+		Avatar INT,
+		AccountPassword VARBINARY(MAX),
+		Active VARCHAR(5), 
+		DateTimeStamp DATETIME DEFAULT GETDATE()
+		
+		CONSTRAINT Account_PK PRIMARY KEY CLUSTERED (AccountId)
+
+	);
+	GO	
+	SET ANSI_NULLS ON
+	GO
+	SET QUOTED_IDENTIFIER ON
+	GO
 
 /***************************************************************************
  *    Create AccountRole table                                      
  ***************************************************************************/
 	CREATE TABLE dbo.AccountRole (
-		AccountRoleId INT IDENTITY(1,1),
+		AccountRoleId BIGINT IDENTITY(1,1),
 		AccountId INT,		
 		AccountRoleType VARCHAR(14) NOT NULL, --User or Administrator
 		DateTimeStamp DATETIME DEFAULT GETDATE(),
@@ -121,27 +164,7 @@ GO
 	GO
 	SET QUOTED_IDENTIFIER ON
 	GO
-/***************************************************************************
- *    Create Account table                          
- ***************************************************************************/
-	CREATE TABLE dbo.Account ( 
-		AccountId INT IDENTITY(1,1), 
-		UserName VARCHAR(50),
-		UserAddress VARCHAR(254),
-		PhoneNumber VARCHAR(50),
-		CreatedEmailAddress VARCHAR(254) UNIQUE,
-		ContactEmailAddress VARCHAR(254),
-		Avatar INT,
-		AccountPassword VARBINARY(MAX),
-		Active VARCHAR(5), 
-		DateTimeStamp DATETIME DEFAULT GETDATE()
-		CONSTRAINT Account_PK PRIMARY KEY CLUSTERED (AccountId)
-	);
-	GO	
-	SET ANSI_NULLS ON
-	GO
-	SET QUOTED_IDENTIFIER ON
-	GO
+
 /*****************************************************************
  *    Create SecutityQuestion table
  *    
@@ -151,14 +174,15 @@ GO
  *        School 'What primary school did you attend?'
  ****************************************************************/
 	CREATE TABLE dbo.SecurityQuestion ( 
-		SecurityQuestionId INT IDENTITY(1,1), 
-		AccountId INT NOT NULL,
+		SecurityQuestionId BIGINT IDENTITY(1,1), 
+		AccountId BIGINT NOT NULL,
 		Question VARCHAR(254) NOT NULL,
 		QuestionType VARCHAR(14) NOT NULL, 
 		Response VARCHAR(254),
 		DateTimeStamp DATETIME DEFAULT GETDATE(),
 		
 		CONSTRAINT SecurityQuestion_PK PRIMARY KEY CLUSTERED (SecurityQuestionId)
+
 	);
 	GO	
 	SET ANSI_NULLS ON
@@ -169,8 +193,8 @@ GO
  *    Create Email table                          
  ***************************************************************************/
 	CREATE TABLE dbo.Email ( 
-		EmailId INT IDENTITY(1,1),
-		AccountId INT,
+		EmailId BIGINT IDENTITY(1,1),
+		AccountId BIGINT,
 		RecvEmailList VARCHAR(4094),
 		EmailSubject VARCHAR(254),
 		EmailBody VARCHAR(MAX),
@@ -187,15 +211,16 @@ GO
  *    Create Tags table                          
  ***************************************************************************/
 	CREATE TABLE dbo.Tags ( 
-		TagId INT IDENTITY(1,1),
+		TagId BIGINT IDENTITY(1,1),
 		TagName VARCHAR(254),
 		TagType VARCHAR(6),
-		AccountId INT,
+		AccountId BIGINT,
+		EmailReceiptId BIGINT,
 		DateTimeStamp DATETIME DEFAULT GETDATE(),
-		CONSTRAINT Tags_PK PRIMARY KEY CLUSTERED (TagId),
 		
-		CONSTRAINT Tags_Account_FK FOREIGN KEY (AccountId) 
-		REFERENCES dbo.Account(AccountId)
+		CONSTRAINT Tags_PK PRIMARY KEY CLUSTERED (TagId),
+
+		
 	);
 	GO	
 	SET ANSI_NULLS ON
@@ -206,23 +231,44 @@ GO
  *    Create EmailReceipt table                          
  ***************************************************************************/
 	CREATE TABLE dbo.EmailReceipt ( 
-		EmailReceiptId INT IDENTITY(1,1),
-		AccountIdSend INT,
-		AccountIdRecv INT,
-		EmailId INT,
-		TagId INT,
+		EmailReceiptId BIGINT IDENTITY(1,1),
+		AccountIdCreate BIGINT,
+		AccountId BIGINT,
+		EmailId BIGINT,
+		TagId BIGINT,
 		EmailFlag VARCHAR(12),
 		DateTimeStamp DATETIME DEFAULT GETDATE(),
 		
 		CONSTRAINT EmailReceipt_PK PRIMARY KEY CLUSTERED (EmailReceiptId),
 		
+		CONSTRAINT EmailReceipt_Tags_FK FOREIGN KEY (TagId) 
+		REFERENCES dbo.Tags(TagId),
+
+		CONSTRAINT EmailReceipt_Account_FK FOREIGN KEY (AccountId) 
+		REFERENCES dbo.Account(AccountId),
+
 		CONSTRAINT EmailReceipt_Email_FK FOREIGN KEY (EmailId) 
 		REFERENCES dbo.Email(EmailId),
-		
-		CONSTRAINT EmailReceipt_Tags_FK FOREIGN KEY (TagId) 
-		REFERENCES dbo.Tags(TagId)
-	);
-	GO	
+        
+		CONSTRAINT AccountId_EmailId_UQ
+        UNIQUE NONCLUSTERED (
+                                AccountId ASC,
+                                Emailid ASC
+                            )
+		);
+	GO
+	SET ANSI_NULLS ON
+	GO
+	SET QUOTED_IDENTIFIER ON
+	GO
+/***************************************************************************
+ *    Add FKs to Account, EmailReceipt, Email and Tags tables
+ ***************************************************************************/
+	ALTER TABLE dbo.Tags 
+		ADD
+		CONSTRAINT Tags_EmailReceipt_FK FOREIGN KEY (EmailReceiptId) 
+		REFERENCES dbo.EmailReceipt(EmailReceiptId);
+	GO
 	SET ANSI_NULLS ON
 	GO
 	SET QUOTED_IDENTIFIER ON
@@ -257,7 +303,7 @@ GO
 		@DateTimeStamp        DATETIME)
 	AS
 	BEGIN TRY 
-		DECLARE @AccountId INT;
+		DECLARE @AccountId BIGINT;
 		IF (@DateTimeStamp IS NULL ) SET @DateTimeStamp = GETDATE();
 			
 		INSERT INTO dbo.Account (UserName, 
@@ -380,7 +426,8 @@ GO
 										@ResponseSchool,
 										@DateTimeStamp);
 			
-		RETURN 0
+		RETURN 1;
+
 	END TRY
 	BEGIN CATCH --On_Account_Insert_Error: 
 		RETURN -1			
@@ -401,7 +448,7 @@ GO
  *        @ResponseSchool 
  *
  ****************************************************************/
-	IF (SELECT object_id('dbo.Account_Security_Questions_SP')) is not null DROP PROCEDURE dbo.Account_Security_Questions_SP;
+	DROP PROCEDURE IF EXISTS dbo.Account_Security_Questions_SP;
 	GO
 	CREATE PROCEDURE dbo.Account_Security_Questions_SP (
 		@CreatedEmailAddress VARCHAR(254)='',
@@ -409,9 +456,11 @@ GO
 		@ResponsePhone VARCHAR(254),
 		@ResponseSchool VARCHAR(254))
 	AS
+
 	BEGIN TRY
-		DECLARE @MatchCount INT
-		SET @MatchCount = 0
+		
+		DECLARE @MatchCount INT = 0;
+
 		SELECT @MatchCount = @MatchCount + 1
 			FROM dbo.Account a
 			JOIN dbo.SecurityQuestion s on s.AccountId = a.AccountId 
@@ -435,7 +484,7 @@ GO
 			
 		SELECT @MatchCount as NumOfCorrectResponses
 
-		RETURN 0
+		RETURN 1;
 
 	END TRY
 	BEGIN CATCH
@@ -494,8 +543,7 @@ GO
 /*****************************************************************
  *    Description: Procedure to UPDATE password in the Account table. 
  ****************************************************************/
-	IF (SELECT object_id('dbo.Account_Update_Password_SP')) is not null 
-	DROP PROCEDURE dbo.Account_Update_Password_SP;
+	DROP PROCEDURE IF EXISTS dbo.Account_Update_Password_SP;
 	GO
 	CREATE PROCEDURE dbo.Account_Update_Password_SP (
 		@CreatedEmailAddress VARCHAR(254),
@@ -532,8 +580,7 @@ GO
  *      @DateTimeStamp
  *
  ***************************************************************************/	
-	IF (SELECT object_id('dbo.Email_Send_SP')) is not null 
-	DROP PROCEDURE dbo.Email_Send_SP;
+	DROP PROCEDURE IF EXISTS dbo.Email_Send_SP;
 	GO
 	
 	CREATE PROCEDURE dbo.Email_Send_SP
@@ -544,9 +591,9 @@ GO
 		@DateTimeStamp DATETIME=''
 	AS
 	BEGIN TRY
-		DECLARE @SendAccountId INT
-		DECLARE @EmailId INT
-		DECLARE @TagsSentId INT
+		DECLARE @SendAccountId BIGINT
+		DECLARE @EmailId BIGINT
+		DECLARE @TagsSentId BIGINT
 
 		SELECT @SendAccountId = AccountId 
 			FROM dbo.Account 
@@ -597,8 +644,8 @@ GO
 		-- insert 'inbox' copy of email into the EmailReceipt table
 		-- for each receive email addesses in the ';' separated list
 		INSERT INTO EmailReceipt 
-				(AccountIdSend,
-				AccountIdRecv,
+				(AccountIdCreate,
+				AccountId,
 				EmailId,
 				TagId,
 				EmailFlag)
@@ -616,8 +663,8 @@ GO
 
 		-- insert 'sent' copy of email into the EmailReceipt 
 		INSERT INTO EmailReceipt 
-				(AccountIdSend,
-				AccountIdRecv,
+				(AccountIdCreate,
+				AccountId,
 				EmailId,
 				TagId,
 				EmailFlag)
@@ -642,8 +689,7 @@ GO
  *        @TagName
  *
  ***************************************************************************/	
-	IF (SELECT object_id('dbo.Get_Email_SP')) is not null 
-	DROP PROCEDURE dbo.Get_Email_SP;
+	DROP PROCEDURE IF EXISTS dbo.Get_Email_SP;
 	GO
 	
 	CREATE PROCEDURE dbo.Get_Email_SP
@@ -652,19 +698,13 @@ GO
 	AS
 	BEGIN TRY
 		SELECT  Account.AccountId,
-				EmailReceipt.AccountIdSend,
+				EmailReceipt.AccountId,
 				Account.UserName,
 				Account.CreatedEmailAddress, 
 				--Join on the sending account id
-				(Select a.Avatar 
-					FROM dbo.Account a 
-					WHERE a.AccountId = EmailReceipt.AccountIdSend) as AvatarSend,
-				(Select a.UserName 
-					FROM dbo.Account a 
-					WHERE a.AccountId = EmailReceipt.AccountIdSend) as UserNameSend,   
-				(Select a.CreatedEmailAddress 
-					FROM dbo.Account a 
-					WHERE a.AccountId = EmailReceipt.AccountIdSend) as CreatedEmailAddressSend,   
+				Account.Avatar,
+				Account.UserName,
+				Account.CreatedEmailAddress,
 				Email.RecvEmailList,
 				(SELECT COUNT(*) FROM STRING_SPLIT(RecvEmailList,';')) AS RecvEmailCount,
 				Email.EmailId,
@@ -672,7 +712,7 @@ GO
 				Email.EmailBody,
 				Email.DateTimeStamp
 		FROM dbo.Account
-		JOIN dbo.EmailReceipt ON EmailReceipt.AccountIdRecv = Account.AccountId
+		JOIN dbo.EmailReceipt ON EmailReceipt.AccountId = Account.AccountId
 		JOIN dbo.Email on Email.EmailId = EmailReceipt.EmailId
 		JOIN dbo.Tags ON Tags.TagId = EmailReceipt.TagId
 		WHERE Account.CreatedEmailAddress = @CreatedEmailAddress
@@ -680,7 +720,7 @@ GO
 		--(ie. @TagName = '%' returns emails from for the Account in ALL folders) 
 		AND Tags.TagName LIKE @TagName;
 
-		RETURN 0;
+		RETURN 1;
 
 	END TRY
 	BEGIN CATCH
@@ -701,8 +741,7 @@ GO
  *        TODO: Fix bug where sent email bug select 2x
 
  ***************************************************************************/	
-	IF (SELECT object_id('dbo.Get_Sent_Email_SP')) is not null 
-	DROP PROCEDURE dbo.Get_Sent_Email_SP;
+	DROP PROCEDURE IF EXISTS dbo.Get_Sent_Email_SP;
 	GO
 	
 	CREATE PROCEDURE dbo.Get_Sent_Email_SP
@@ -710,7 +749,7 @@ GO
 		@TagName VARCHAR(12)='Sent'
 	AS
 	BEGIN TRY
-		DECLARE @AccountId INT;
+		DECLARE @AccountId BIGINT;
 
 		SELECT @AccountId = Account.AccountId
 		FROM dbo.Account
@@ -733,7 +772,7 @@ GO
 		JOIN dbo.Account ON Account.AccountId = Email.AccountId
 		WHERE Email.AccountId = @AccountId;
 
-		RETURN 0;
+		RETURN 1;
 
 	END TRY
 	BEGIN CATCH
@@ -760,22 +799,19 @@ GO
 		SELECT  EmailReceipt.EmailReceiptId,
 				Email.EmailId,
 				Email.AccountId AS AccountIdSend,
-				(SELECT a.CreatedEmailAddress 
-					FROM dbo.account a 
-					WHERE a.AccountId = Email.AccountId) as CreatedEmailAddressSend,
-				EmailReceipt.AccountIdSend as AccountIdRecv,
-				(SELECT b.CreatedEmailAddress 
-					FROM dbo.account b 
-					WHERE b.AccountId = EmailReceipt.AccountIdSend) as CreatedEmailAddressRecv,
+				Account.CreatedEmailAddress,
+				EmailReceipt.AccountId as AccountIdRecv,
+				Account.CreatedEmailAddress,
 				Email.EmailSubject,
 				Email.EmailBody,
 				Email.DateTimeStamp
 		FROM EmailReceipt
+		JOIN dbo.Account Account on Account.AccountId = EmailReceipt.AccountId
 		JOIN dbo.Email on Email.EmailId = EmailReceipt.EmailId
 		JOIN dbo.Tags ON Tags.TagId = EmailReceipt.TagId
 		WHERE Tags.TagName = @TagName
 
-		RETURN 0;
+		RETURN 1;
 
 	END TRY
 	BEGIN CATCH
@@ -811,6 +847,9 @@ GO
 		JOIN dbo.Tags ON Tags.TagId = EmailReceipt.TagId
 		JOIN dbo.Account on Account.AccountId = Email.AccountId
 		WHERE Tags.TagName = 'Flag'
+
+		RETURN 1;
+
 	END TRY
 	BEGIN CATCH 
 		RETURN -1;
@@ -836,15 +875,14 @@ GO
     DECLARE @ErrorState INT;
 	BEGIN TRY
 
-		DECLARE @AccountId INT
+		DECLARE @AccountId BIGINT
 		SELECT @AccountId = AccountId 
 			FROM dbo.Account 
 			WHERE CreatedEmailAddress = @CreatedEmailAddress;
-		DECLARE @Now DATETIME
-		SET @Now = GETDATE()
+		DECLARE @Now DATETIME = GETDATE();
 
 		-- if the tag already exists return -1
-		IF (EXISTS(SELECT * 
+		IF (EXISTS(SELECT 1 
 					FROM dbo.Tags 
 					WHERE Tags.AccountId = @AccountId
 						AND Tags.TagName = @TagName))
@@ -868,7 +906,7 @@ GO
 				@AccountId,
 				@Now);
 
-		RETURN 0;
+		RETURN 1;
 
 	END TRY
 	BEGIN CATCH --On_Create_Tag_Error: 
@@ -893,7 +931,7 @@ GO
 		@TagType VARCHAR(6)=''
 	AS
 		BEGIN TRY
-			DECLARE @AccountId INT,
+			DECLARE @AccountId BIGINT,
 					@Model VARCHAR(6),
 					@Custom VARCHAR(6)
 
@@ -942,18 +980,17 @@ GO
  *		@TagName
  *
  ***************************************************************************/	
-	IF (SELECT object_id('dbo.EmailRecipt_Tag_Update_SP')) is not null 
-	DROP PROCEDURE dbo.EmailRecipt_Tag_Update_SP;
+	DROP PROCEDURE IF EXISTS dbo.EmailRecipt_Tag_Update_SP;
 	GO
 	
 	CREATE PROCEDURE dbo.EmailRecipt_Tag_Update_SP
-		@AccountId INT=0,
-		@EmailId INT=0,
+		@AccountId BIGINT=0,
+		@EmailId BIGINT=0,
 		@TagName VARCHAR(6)=''
 	AS
 	BEGIN TRANSACTION
 		BEGIN
-			DECLARE @TagIdNew INT
+			DECLARE @TagIdNew BIGINT
 			SELECT @TagIdNew = TagId
 				FROM dbo.Tags 
 				WHERE Tags.TagName = @TagName AND Tags.AccountId = @AccountId
@@ -963,7 +1000,7 @@ GO
 				SET TagId = @TagIdNew
 				FROM EmailReceipt 
 				JOIN Tags ON EmailReceipt.TagId = Tags.TagId 
-				WHERE EmailReceipt.AccountIdRecv = @AccountId 
+				WHERE EmailReceipt.AccountId = @AccountId 
 				AND EmailReceipt.EmailId = @EmailId
 			IF @@Error = -1 GOTO On_EmailRecipt_Tag_Update_SP_Error
 
@@ -982,12 +1019,11 @@ GO
  *		@Active
  *
  ***************************************************************************/	
-	IF (SELECT object_id('dbo.Account_Active_Update_SP')) is not null 
-	DROP PROCEDURE dbo.Account_Active_Update_SP;
+	DROP PROCEDURE IF EXISTS dbo.Account_Active_Update_SP;
 	GO
 	
 	CREATE PROCEDURE dbo.Account_Active_Update_SP
-		@AccountId INT=0,
+		@AccountId BIGINT=0,
 		@Active VARCHAR(5)=''
 	AS
 	BEGIN TRANSACTION
@@ -1077,28 +1113,6 @@ GO
 		GO
 	dbo.Account_Insert_SP
 	    @UserName=
-			'Prof P',
-	    @UserAddress=
-			'1400 Pattison Ave, Philadelphia, PA 01234',
-	    @PhoneNumber=
-			'123-858-5225',
-	    @CreatedEmailAddress=
-			'prof@temple.edu',
-	    @ContactEmailAddress= 
-			'prof@yahoo.com',
-	    @Avatar=
-			8,
-		@AccountPassword=
-			0x2673BA5EA47ADBACDC45E9D9B2EF6B2B,
-	    @Active=
-			'yes',
-		@DateTimeStamp=
-			NULL,
-		@AccountRoleType=
-			'User';
-		GO
-	dbo.Account_Insert_SP
-	    @UserName=
 			'Bruce W',
 	    @UserAddress=
 			'1234B 1/2 E Independence Mall S Ste 12A',
@@ -1119,28 +1133,7 @@ GO
 		@AccountRoleType=
 			'User';
 		GO
-	dbo.Account_Insert_SP
-	    @UserName=
-			'Bruce W (admin)',
-	    @UserAddress=
-			'1234B 1/2 E Independence Mall S Ste 12A',
-	    @PhoneNumber=
-			'123-359-7563',
-	    @CreatedEmailAddress=
-			'brucew-admin@temple.edu',
-	    @ContactEmailAddress=
-			'brucew@outlook.com',
-	    @Avatar=
-			11,
-		@AccountPassword=
-			0x2673BA5EA47ADBACDC45E9D9B2EF6B2B,
-	    @Active=
-			'yes',
-		@DateTimeStamp=
-			NULL,
-		@AccountRoleType=
-			'Administrator';
-		GO
+
 --/***************************************************************************
 -- *    Send/Create some sample emails
 -- ***************************************************************************/

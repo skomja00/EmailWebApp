@@ -6,23 +6,23 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-	<title>Email WebApp</title>
-	<link rel="icon" type="image/svg" href="Images/mail.svg" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	
+    <title>Email WebApp</title>
+    <link rel="icon" type="image/svg" href="Images/mail.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
     <%--Bootstrap Icons CDN--%>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
 
-	<%--Bootstrap CSS CDN--%>
-	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
-	
-	<%--local <style> & CSS--%>
-	<link href="Style/Modal.css" rel="stylesheet" />
+    <%--Bootstrap CSS CDN--%>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    
+    <%--local <style> & CSS--%>
+    <link href="Style/Modal.css" rel="stylesheet" />
     <link href="Style/Common.css" rel="stylesheet" />
 
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <%--font-awesome icon, SVG, font, and CSS toolkit--%>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
@@ -33,7 +33,7 @@
         <%--Start NavBar--%>
         <nav class="navbar fixed-top navigation border border-primary rounded">
             <%--Navigation Logo--%>
-			<span class="border border-primary rounded bg-white p-3 m-3">Email WebApp</span>
+            <span class="border border-primary rounded bg-white p-3 m-3">Email WebApp</span>
             <%--Navigation drop down--%>
             <div class="btn-toolbar">
                 <div class="btn-group">
@@ -56,7 +56,7 @@
                     </svg>
                 </div>
                 <div>
-				    <asp:Label ID="lblNavUserName" runat="server"></asp:Label>
+                    <asp:Label ID="lblNavUserName" runat="server"></asp:Label>
                 </div>
             </div>
         </nav>
