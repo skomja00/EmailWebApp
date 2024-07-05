@@ -13,8 +13,9 @@ GO
     tun49199 - 2021-03-03 - Original code.
 	skomja00 - 2024-06-16 - Redesign DB table objects
     skomja00 - 2024-07-05 - refactor dbo.Account_Insert_SP
-                            TODO: dbo.Account_Security_Questions_SP
-                            TODO: dbo.Account_Login_SP
+                                     dbo.Account_Security_Questions_SP 
+                                     dbo.Account_Login_SP
+
                             TODO: dbo.Account_Update_Password_SP
                             TODO: dbo.Email_Send_SP
                             TODO: dbo.Get_Email_SP (TODO: fix bug sent email returned 2x)
@@ -25,6 +26,9 @@ GO
                             TODO: dbo.Get_Tags_SP
                             TODO: dbo.EmailRecipt_Tag_Update_SP
                             TODO: dbo.Account_Active_Update_SP	
+
+                            add dbo.SecurityQuestion responses to results of Account_Login_SP 
+
 	Testing Scripts:
 
 	DECLARE @GetDate DATETIME
@@ -344,13 +348,13 @@ GO
 									@AccountRoleType,
 									@DateTimeStamp);
 
-		-- All email accounts get a 'model' set of Tags 
-		-- including 'Inbox'
-		--			'Sent'
-		--			'Flag'
-		--			'Junk'
-		--			'Trash'
+		-- All email accounts get the following 'model' set of Tags 
 		-- Tags subsequently added by the user will have a 'Custom' TagType
+        --  'Inbox'
+		--	'Sent'
+		--	'Flag'
+		--	'Junk'
+		--	'Trash'
 		INSERT INTO dbo.Tags (TagName, 
 							TagType, 
 							AccountId, 
@@ -428,26 +432,26 @@ GO
 		
 		DECLARE @MatchCount INT = 0;
 
-		SELECT @MatchCount = @MatchCount + 1
-			FROM dbo.Account a
-			JOIN dbo.SecurityQuestion s on s.AccountId = a.AccountId 
-			WHERE a.CreatedEmailAddress = @CreatedEmailAddress 
-			AND s.Response = @ResponseCity
-			AND s.QuestionType = 'City'
-
-		SELECT @MatchCount = @MatchCount + 1
-		FROM dbo.Account a
-			JOIN dbo.SecurityQuestion s on s.AccountId = a.AccountId 
-			WHERE a.CreatedEmailAddress = @CreatedEmailAddress 
-			AND s.Response = @ResponsePhone
-			AND s.QuestionType = 'Phone'
-
-		SELECT @MatchCount = @MatchCount + 1
-			FROM dbo.Account a
-			JOIN dbo.SecurityQuestion s on s.AccountId = a.AccountId 
-			WHERE a.CreatedEmailAddress = @CreatedEmailAddress 
-			AND s.Response = @ResponseSchool
-			AND s.QuestionType = 'School'
+        SELECT @MatchCount = 
+            SUM (
+                    IIF(city.AccountId IS NULL,     0, 1)
+                    + IIF(phone.AccountId IS NULL,  0, 1)
+                    + IIF(school.AccountId IS NULL, 0, 1)
+                )
+        FROM dbo.Account acct
+        LEFT JOIN dbo.SecurityQuestion city
+                ON acct.AccountId = city.AccountId 
+			    AND city.Response = @ResponseCity
+			    AND city.QuestionType = 'City'
+		LEFT JOIN dbo.SecurityQuestion phone
+                ON acct.AccountId = phone.AccountId 
+			    AND phone.Response = @ResponsePhone
+			    AND phone.QuestionType = 'Phone'
+		LEFT JOIN dbo.SecurityQuestion school
+                ON acct.AccountId = school.AccountId 
+                AND school.Response = @ResponseSchool
+			    AND school.QuestionType = 'School'
+        WHERE acct.CreatedEmailAddress = @CreatedEmailAddress 
 			
 		SELECT @MatchCount as NumOfCorrectResponses
 
@@ -480,25 +484,33 @@ GO
  ***************************************************************************/
 	DROP PROCEDURE IF EXISTS dbo.Account_Login_SP;
 	GO
-	CREATE PROCEDURE dbo.Account_Login_SP (
-		@CreatedEmailAddress VARCHAR(254),
-		@AccountPassword VARBINARY(MAX) )
+	CREATE PROCEDURE dbo.Account_Login_SP 
+        (
+		    @CreatedEmailAddress VARCHAR(254),
+		    @AccountPassword VARBINARY(MAX)
+        )
 	AS
 	BEGIN TRY
 		SELECT 
-			Account.AccountId,
-			Account.UserName,
-			Account.UserAddress,
-			Account.PhoneNumber,
-			Account.CreatedEmailAddress,
-			Account.ContactEmailAddress,
-			Account.Avatar,
-			Account.AccountPassword,
-			Account.Active,
-			Account.DateTimeStamp,
-			AccountRole.AccountRoleType
-		FROM dbo.Account
-		JOIN dbo.AccountRole ON AccountRole.AccountId = Account.AccountId
+			acct.AccountId,
+			acct.UserName,
+			acct.UserAddress,
+			acct.PhoneNumber,
+			acct.CreatedEmailAddress,
+			acct.ContactEmailAddress,
+			acct.Avatar,
+			acct.AccountPassword,
+			acct.Active,
+			acct.DateTimeStamp,
+			AccountRole.AccountRoleType,
+            city.Response AS SecurityQuestionCity,
+            phone.Response AS SecurityQuestionPhone,
+            school.Response AS SecurityQuestionSchool
+		FROM dbo.Account acct
+		JOIN dbo.AccountRole ON AccountRole.AccountId = acct.AccountId
+        JOIN dbo.SecurityQuestion city   ON city.AccountId = acct.AccountId and city.QuestionType = 'city'
+        JOIN dbo.SecurityQuestion phone  ON phone.AccountId = acct.AccountId and phone.QuestionType = 'phone'
+        JOIN dbo.SecurityQuestion school ON school.AccountId = acct.AccountId and school.QuestionType = 'school'
 		WHERE CreatedEmailAddress = @CreatedEmailAddress 
 		AND AccountPassword = @AccountPassword;
 
@@ -506,8 +518,16 @@ GO
 
 	END TRY
 	BEGIN CATCH
-		RETURN -1
-	END CATCH 
+        SELECT
+            -1                 AS ReturnCode
+            ,ERROR_NUMBER()    AS ErrorNumber  
+            ,ERROR_SEVERITY()  AS ErrorSeverity  
+            ,ERROR_STATE()     AS ErrorState  
+            ,ERROR_PROCEDURE() AS ErrorProcedure  
+            ,ERROR_LINE()      AS ErrorLine  
+            ,ERROR_MESSAGE()   AS ErrorMessage;  
+		RETURN -1;
+    END CATCH 
 	GO	
 	SET ANSI_NULLS ON
 	GO
@@ -1018,94 +1038,65 @@ GO
  *  Insert starter Account data                                       
  ***************************************************************************/
 	dbo.Account_Insert_SP
-		@UserName=
-			'James S',
-		@UserAddress=
-			'101 Main, Philadelphia, PA 01234',
-		@PhoneNumber=
-			'+11234567890',
-		@CreatedEmailAddress=
-			'jims@temple.edu',
-		@ContactEmailAddress=
-			'tun49199@temple.edu',
-		@Avatar=
-			3,
-		--lower case 'p'
-		@AccountPassword=
-			0x2673BA5EA47ADBACDC45E9D9B2EF6B2B,
-		@Active=
-			'yes',
-		@DateTimeStamp=
-			NULL,
-		@AccountRoleType=
-			'User';
+		@UserName               = 'James S',
+		@UserAddress            = '101 Main, Philadelphia, PA 01234',
+		@PhoneNumber            = '+11234567890',
+		@CreatedEmailAddress    = 'jims@temple.edu',
+		@ContactEmailAddress    = 'tun49199@temple.edu',
+		@Avatar                 = 3,
+		@AccountPassword        = 0x2673BA5EA47ADBACDC45E9D9B2EF6B2B,--'p'
+		@Active                 ='yes',
+		@DateTimeStamp          = NULL,
+		@AccountRoleType        ='User',
+        @ResponseCity           = 'city',
+		@ResponsePhone          = '1234',
+		@ResponseSchool         = 'school';
 		GO
 	dbo.Account_Insert_SP
-		@UserName=
-			'James S (admin)',
-		@UserAddress=
-			'101 Main, Philadelphia, PA 01234',
-		@PhoneNumber=
-			'+11234567890',
-		@CreatedEmailAddress=
-			'jims-admin@temple.edu',
-		@ContactEmailAddress=
-			'jims@gmail.com',
-		@Avatar=
-			3,
-		@AccountPassword=
-			0x2673BA5EA47ADBACDC45E9D9B2EF6B2B,
-		@Active=
-			'yes',
-		@DateTimeStamp=
-			NULL,
-		@AccountRoleType=
-			'Administrator';
+		@UserName               = 'James S (admin)',
+		@UserAddress            = '101 Main, Philadelphia, PA 01234',
+		@PhoneNumber            = '+11234567890',
+		@CreatedEmailAddress    = 'jims-admin@temple.edu',
+		@ContactEmailAddress    = 'jims@gmail.com',
+		@Avatar                 = 3,
+		@AccountPassword        = 0x2673BA5EA47ADBACDC45E9D9B2EF6B2B,
+		@Active                 = 'yes',
+		@DateTimeStamp          = NULL,
+		@AccountRoleType        = 'Administrator',
+        @ResponseCity           = 'city',
+		@ResponsePhone          = '1234',
+		@ResponseSchool         = 'school';
 		GO
---	dbo.Account_Insert_SP
---		@UserName=
---			'Richard G',
---	    @UserAddress=
---			'1712 Broad St, Philadelphia, PA 01234',
---	    @PhoneNumber=
---			'123-312-0312',
---	    @CreatedEmailAddress=
---			'richardg@temple.edu',
---	    @ContactEmailAddress=
---			'richardg@gmail.com',
---	    @Avatar=
---			4,
---		@AccountPassword=
---			0x2673BA5EA47ADBACDC45E9D9B2EF6B2B,
---	    @Active=
---			'yes',
---		@DateTimeStamp=
---			NULL,
---		@AccountRoleType=
---			'User';
---		GO
---	dbo.Account_Insert_SP
---	    @UserName=
---			'Bruce W',
---	    @UserAddress=
---			'1234B 1/2 E Independence Mall S Ste 12A',
---	    @PhoneNumber=
---			'123-359-7563',
---	    @CreatedEmailAddress=
---			'brucew@temple.edu',
---	    @ContactEmailAddress=
---			'brucew@outlook.com',
---	    @Avatar=
---			11,
---		@AccountPassword=
---			0x2673BA5EA47ADBACDC45E9D9B2EF6B2B,
---	    @Active=
---			'yes',
---		@DateTimeStamp=
---			NULL,
---		@AccountRoleType=
---			'User';
---		GO
+	dbo.Account_Insert_SP
+		@UserName               = 'Richard G',
+	    @UserAddress            = '1712 Broad St, Philadelphia, PA 01234',
+	    @PhoneNumber            = '123-312-0312',
+	    @CreatedEmailAddress    = 'richardg@temple.edu',
+	    @ContactEmailAddress    = 'richardg@gmail.com',
+	    @Avatar                 = 4,
+		@AccountPassword        = 0x2673BA5EA47ADBACDC45E9D9B2EF6B2B,
+	    @Active                 = 'yes',
+		@DateTimeStamp          = NULL,
+		@AccountRoleType        = 'User',
+        @ResponseCity           = 'city',
+		@ResponsePhone          = '1234',
+		@ResponseSchool         = 'school';
+		GO                        
+	dbo.Account_Insert_SP         
+	    @UserName               = 'Bruce W',
+	    @UserAddress            = '1234B 1/2 E Independence Mall S Ste 12A',
+	    @PhoneNumber            = '123-359-7563',
+	    @CreatedEmailAddress    = 'brucew@temple.edu',
+	    @ContactEmailAddress    = 'brucew@outlook.com',
+	    @Avatar                 = 11,
+		@AccountPassword        = 0x2673BA5EA47ADBACDC45E9D9B2EF6B2B,
+	    @Active                 = 'yes',
+		@DateTimeStamp          = NULL,
+		@AccountRoleType        = 'User',
+        @ResponseCity           = 'city',
+		@ResponsePhone          = '1234',
+		@ResponseSchool         = 'school';
+		GO
 
 ----/***************************************************************************
 ---- *    Send/Create some sample emails
