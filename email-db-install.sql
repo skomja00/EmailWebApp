@@ -1,4 +1,5 @@
-use sp21_3342_tun49199; 
+USE email;
+GO
 /*		
 	Description: These SQL scripts create the items used
 	by the Email WebApp within an existing database.
@@ -10,8 +11,20 @@ use sp21_3342_tun49199;
 
 	Changes Made: 
     tun49199 - 2021-03-03 - Original code.
-	skomja00 - 2024-06-16 - Code refactor
-	
+	skomja00 - 2024-06-16 - Redesign DB table objects
+    skomja00 - 2024-07-05 - refactor dbo.Account_Insert_SP
+                            TODO: dbo.Account_Security_Questions_SP
+                            TODO: dbo.Account_Login_SP
+                            TODO: dbo.Account_Update_Password_SP
+                            TODO: dbo.Email_Send_SP
+                            TODO: dbo.Get_Email_SP (TODO: fix bug sent email returned 2x)
+                            TODO: dbo.Get_Sent_Email_SP
+                            TODO: dbo.Get_Email_With_Tag_SP
+                            TODO: dbo.Get_Accounts_With_Flagged_Email_SP
+                            TODO: dbo.Create_Tag_SP
+                            TODO: dbo.Get_Tags_SP
+                            TODO: dbo.EmailRecipt_Tag_Update_SP
+                            TODO: dbo.Account_Active_Update_SP	
 	Testing Scripts:
 
 	DECLARE @GetDate DATETIME
@@ -129,18 +142,17 @@ GO
  ***************************************************************************/
 	CREATE TABLE dbo.Account ( 
 		AccountId BIGINT IDENTITY(1,1), 
-		EmailReceiptId BIGINT,
 		UserName VARCHAR(50),
 		UserAddress VARCHAR(254),
 		PhoneNumber VARCHAR(50),
-		CreatedEmailAddress VARCHAR(254) UNIQUE,
+	    CreatedEmailAddress VARCHAR(254) 
+            CONSTRAINT CreatedEmailAddress_UQ UNIQUE(CreatedEmailAddress),
 		ContactEmailAddress VARCHAR(254),
 		Avatar INT,
 		AccountPassword VARBINARY(MAX),
 		Active VARCHAR(5), 
 		DateTimeStamp DATETIME DEFAULT GETDATE()
-		
-		CONSTRAINT Account_PK PRIMARY KEY CLUSTERED (AccountId)
+    		CONSTRAINT Account_PK PRIMARY KEY CLUSTERED (AccountId)
 
 	);
 	GO	
@@ -217,9 +229,8 @@ GO
 		AccountId BIGINT,
 		EmailReceiptId BIGINT,
 		DateTimeStamp DATETIME DEFAULT GETDATE(),
-		
 		CONSTRAINT Tags_PK PRIMARY KEY CLUSTERED (TagId),
-
+		CONSTRAINT Tags_Account_FK FOREIGN KEY (AccountId) REFERENCES dbo.Account(AccountId),
 		
 	);
 	GO	
@@ -262,7 +273,7 @@ GO
 	SET QUOTED_IDENTIFIER ON
 	GO
 /***************************************************************************
- *    Add FKs to Account, EmailReceipt, Email and Tags tables
+ *    Add FK from EmailRecipt to Tags
  ***************************************************************************/
 	ALTER TABLE dbo.Tags 
 		ADD
@@ -288,18 +299,18 @@ GO
 	GO
 	
 	CREATE PROCEDURE dbo.Account_Insert_SP (
-		@UserName             VARCHAR(50)='',
-		@UserAddress          VARCHAR(254)='',
-		@PhoneNumber          VARCHAR(50)='',
-		@CreatedEmailAddress  VARCHAR(254)='',
-		@ContactEmailAddress  VARCHAR(254)='',
+		@UserName             VARCHAR(50)     ='',
+		@UserAddress          VARCHAR(254)    ='',
+		@PhoneNumber          VARCHAR(50)     ='',
+		@CreatedEmailAddress  VARCHAR(254)    ='',
+		@ContactEmailAddress  VARCHAR(254)    ='',
 		@Avatar               INT=0,
 		@AccountPassword      VARBINARY(MAX),
-		@Active               VARCHAR(5)='', 
-		@ResponseCity         VARCHAR(254)= '',
-		@ResponsePhone        VARCHAR(254)= '',
-		@ResponseSchool       VARCHAR(254)= '',
-		@AccountRoleType      VARCHAR(14) = '',
+		@Active               VARCHAR(5)      ='', 
+		@ResponseCity         VARCHAR(254)    = '',
+		@ResponsePhone        VARCHAR(254)    = '',
+		@ResponseSchool       VARCHAR(254)    = '',
+		@AccountRoleType      VARCHAR(14)     = '',
 		@DateTimeStamp        DATETIME)
 	AS
 	BEGIN TRY 
@@ -339,98 +350,54 @@ GO
 		--			'Flag'
 		--			'Junk'
 		--			'Trash'
-		-- Tags subsequently addeed by the user will have a 'Custom' TagType
-		INSERT INTO dbo.Tags (TagName, 
-							TagType, 
-							AccountId, 
-							DateTimeStamp) 
-							VALUES('Inbox',
-									'Model', 
-									@AccountId, 
-									@DateTimeStamp);
-			
+		-- Tags subsequently added by the user will have a 'Custom' TagType
 		INSERT INTO dbo.Tags (TagName, 
 							TagType, 
 							AccountId, 
 							DateTimeStamp) 
 					VALUES
-							('Sent',
-							'Model',
-							@AccountId,
-							@DateTimeStamp);
-			
-		INSERT INTO dbo.Tags (TagName, 
-							TagType,
-							AccountId,
-							DateTimeStamp) 
-					VALUES
-							('Flag',
-							'Model',
-							@AccountId,
-							@DateTimeStamp);
-			
-		INSERT INTO dbo.Tags (TagName,
-							TagType,
-							AccountId,
-							DateTimeStamp) 
-					VALUES
-							('Junk',
-							'Model',
-							@AccountId,
-							@DateTimeStamp);
-			
-		INSERT INTO dbo.Tags (TagName,
-							TagType,
-							AccountId,
-							DateTimeStamp) 
-					VALUES
-							('Trash',
-							'Model',
-							@AccountId,
-							@DateTimeStamp);
+							('Inbox', 'Model', @AccountId, @DateTimeStamp),
+							('Sent',  'Model', @AccountId, @DateTimeStamp),
+							('Flag',  'Model', @AccountId, @DateTimeStamp),
+							('Junk',  'Model', @AccountId, @DateTimeStamp),
+							('Trash', 'Model', @AccountId, @DateTimeStamp);
 			
 		DECLARE @Question VARCHAR(254);
-		SELECT @Question = 'In what town or city was your first full time job?';
 		INSERT INTO dbo.SecurityQuestion(AccountId, 
 										QuestionType,
 										Question,
 										Response,
 										DateTimeStamp) 
-									VALUES (@AccountId,
-										'City',
-										@Question,
-										@ResponseCity,
-										@DateTimeStamp);
-
-		SELECT @Question = 'What were the last four digits of your childhood telephone number?';
-		INSERT INTO dbo.SecurityQuestion(AccountId,
-										QuestionType,
-										Question,
-										Response,
-										DateTimeStamp) 
-									VALUES (@AccountId,
-										'Phone',
-										@Question,
-										@ResponsePhone,
-										@DateTimeStamp);
-
-		SELECT @Question = 'What primary school did you attend?';
-		INSERT INTO dbo.SecurityQuestion(AccountId,
-										QuestionType,
-										Question,
-										Response,
-										DateTimeStamp) 
-									VALUES (@AccountId,
-										'School',
-										@Question,
-										@ResponseSchool,
-										@DateTimeStamp);
+		    VALUES 
+                (@AccountId,
+			        'City',
+			        'In what town or city was your first full time job?',
+			        @ResponseCity,
+    			    @DateTimeStamp),
+                (@AccountId,
+				    'Phone',
+				    'What were the last four digits of your childhood telephone number?',
+				    @ResponsePhone,
+				    @DateTimeStamp),
+                (@AccountId,
+	                'School',
+	                'What primary school did you attend?',
+	                @ResponseSchool,
+	                @DateTimeStamp);
 			
 		RETURN 1;
 
 	END TRY
 	BEGIN CATCH --On_Account_Insert_Error: 
-		RETURN -1			
+        SELECT
+            -1                 AS ReturnCode
+            ,ERROR_NUMBER()    AS ErrorNumber  
+            ,ERROR_SEVERITY()  AS ErrorSeverity  
+            ,ERROR_STATE()     AS ErrorState  
+            ,ERROR_PROCEDURE() AS ErrorProcedure  
+            ,ERROR_LINE()      AS ErrorLine  
+            ,ERROR_MESSAGE()   AS ErrorMessage;  
+		RETURN -1;
 	END CATCH
 	GO
 	SET ANSI_NULLS ON
@@ -488,9 +455,15 @@ GO
 
 	END TRY
 	BEGIN CATCH
-
-		RETURN -1
-
+        SELECT
+            -1                 AS ReturnCode
+            ,ERROR_NUMBER()    AS ErrorNumber  
+            ,ERROR_SEVERITY()  AS ErrorSeverity  
+            ,ERROR_STATE()     AS ErrorState  
+            ,ERROR_PROCEDURE() AS ErrorProcedure  
+            ,ERROR_LINE()      AS ErrorLine  
+            ,ERROR_MESSAGE()   AS ErrorMessage;  
+		RETURN -1;
 	END CATCH
 	GO	
 	SET ANSI_NULLS ON
@@ -1089,115 +1062,115 @@ GO
 		@AccountRoleType=
 			'Administrator';
 		GO
-	dbo.Account_Insert_SP
-		@UserName=
-			'Richard G',
-	    @UserAddress=
-			'1712 Broad St, Philadelphia, PA 01234',
-	    @PhoneNumber=
-			'123-312-0312',
-	    @CreatedEmailAddress=
-			'richardg@temple.edu',
-	    @ContactEmailAddress=
-			'richardg@gmail.com',
-	    @Avatar=
-			4,
-		@AccountPassword=
-			0x2673BA5EA47ADBACDC45E9D9B2EF6B2B,
-	    @Active=
-			'yes',
-		@DateTimeStamp=
-			NULL,
-		@AccountRoleType=
-			'User';
-		GO
-	dbo.Account_Insert_SP
-	    @UserName=
-			'Bruce W',
-	    @UserAddress=
-			'1234B 1/2 E Independence Mall S Ste 12A',
-	    @PhoneNumber=
-			'123-359-7563',
-	    @CreatedEmailAddress=
-			'brucew@temple.edu',
-	    @ContactEmailAddress=
-			'brucew@outlook.com',
-	    @Avatar=
-			11,
-		@AccountPassword=
-			0x2673BA5EA47ADBACDC45E9D9B2EF6B2B,
-	    @Active=
-			'yes',
-		@DateTimeStamp=
-			NULL,
-		@AccountRoleType=
-			'User';
-		GO
+--	dbo.Account_Insert_SP
+--		@UserName=
+--			'Richard G',
+--	    @UserAddress=
+--			'1712 Broad St, Philadelphia, PA 01234',
+--	    @PhoneNumber=
+--			'123-312-0312',
+--	    @CreatedEmailAddress=
+--			'richardg@temple.edu',
+--	    @ContactEmailAddress=
+--			'richardg@gmail.com',
+--	    @Avatar=
+--			4,
+--		@AccountPassword=
+--			0x2673BA5EA47ADBACDC45E9D9B2EF6B2B,
+--	    @Active=
+--			'yes',
+--		@DateTimeStamp=
+--			NULL,
+--		@AccountRoleType=
+--			'User';
+--		GO
+--	dbo.Account_Insert_SP
+--	    @UserName=
+--			'Bruce W',
+--	    @UserAddress=
+--			'1234B 1/2 E Independence Mall S Ste 12A',
+--	    @PhoneNumber=
+--			'123-359-7563',
+--	    @CreatedEmailAddress=
+--			'brucew@temple.edu',
+--	    @ContactEmailAddress=
+--			'brucew@outlook.com',
+--	    @Avatar=
+--			11,
+--		@AccountPassword=
+--			0x2673BA5EA47ADBACDC45E9D9B2EF6B2B,
+--	    @Active=
+--			'yes',
+--		@DateTimeStamp=
+--			NULL,
+--		@AccountRoleType=
+--			'User';
+--		GO
 
---/***************************************************************************
--- *    Send/Create some sample emails
--- ***************************************************************************/
-	DECLARE @GetDate DATETIME
-	SET @GetDate = GETDATE();
+----/***************************************************************************
+---- *    Send/Create some sample emails
+---- ***************************************************************************/
+--	DECLARE @GetDate DATETIME
+--	SET @GetDate = GETDATE();
 
-	exec dbo.Email_Send_SP
-	@SendEmailAddress = 'prof@temple.edu',
-	@RecvEmailList = 'jims@temple.edu',
-	@EmailSubject = 'database',
-	@EmailBody = 'There, it should be working, again',
-	@DateTimeStamp = @GetDate
+--	exec dbo.Email_Send_SP
+--	@SendEmailAddress = 'prof@temple.edu',
+--	@RecvEmailList = 'jims@temple.edu',
+--	@EmailSubject = 'database',
+--	@EmailBody = 'There, it should be working, again',
+--	@DateTimeStamp = @GetDate
 
-	exec dbo.Email_Send_SP
-	@SendEmailAddress = 'brucew@temple.edu',
-	@RecvEmailList = 'jims@temple.edu;richardg@temple.edu',
-	@EmailSubject = 'Lecture Wednesday',
-	@EmailBody = 'Discuss .NET Core WebAPIs',
-	@DateTimeStamp = @GetDate
+--	exec dbo.Email_Send_SP
+--	@SendEmailAddress = 'brucew@temple.edu',
+--	@RecvEmailList = 'jims@temple.edu;richardg@temple.edu',
+--	@EmailSubject = 'Lecture Wednesday',
+--	@EmailBody = 'Discuss .NET Core WebAPIs',
+--	@DateTimeStamp = @GetDate
 
-	exec dbo.Email_Send_SP
-	@SendEmailAddress = 'richardg@temple.edu',
-	@RecvEmailList = 'jims@temple.edu',
-	@EmailSubject='Lorem ipsum',
-	@EmailBody='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.',
-	@DateTimeStamp = @GetDate
+--	exec dbo.Email_Send_SP
+--	@SendEmailAddress = 'richardg@temple.edu',
+--	@RecvEmailList = 'jims@temple.edu',
+--	@EmailSubject='Lorem ipsum',
+--	@EmailBody='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.',
+--	@DateTimeStamp = @GetDate
 
-	exec dbo.Email_Send_SP
-	@SendEmailAddress='jims@temple.edu',
-	@RecvEmailList = 'brucew@temple.edu;richardg@temple.edu',
-	@EmailSubject='pellentesque',
-	@EmailBody='At tellus at urna condimentum mattis pellentesque id. Sed adipiscing diam donec adipiscing.',
-	@DateTimeStamp = @GetDate
+--	exec dbo.Email_Send_SP
+--	@SendEmailAddress='jims@temple.edu',
+--	@RecvEmailList = 'brucew@temple.edu;richardg@temple.edu',
+--	@EmailSubject='pellentesque',
+--	@EmailBody='At tellus at urna condimentum mattis pellentesque id. Sed adipiscing diam donec adipiscing.',
+--	@DateTimeStamp = @GetDate
 
-	exec dbo.Email_Send_SP
-	@SendEmailAddress='jims@temple.edu',
-	@RecvEmailList = 'brucew@temple.edu',
-	@EmailSubject='commodo viverra',
-	@EmailBody='Malesuada nunc vel risus commodo viverra. Habitasse platea dictumst vestibulum rhoncus.',
-	@DateTimeStamp = @GetDate
+--	exec dbo.Email_Send_SP
+--	@SendEmailAddress='jims@temple.edu',
+--	@RecvEmailList = 'brucew@temple.edu',
+--	@EmailSubject='commodo viverra',
+--	@EmailBody='Malesuada nunc vel risus commodo viverra. Habitasse platea dictumst vestibulum rhoncus.',
+--	@DateTimeStamp = @GetDate
 
-    update sq 
-    	set Response = 'city'
-    from dbo.Account a
-    join [dbo].[SecurityQuestion] sq 
-        on sq.AccountId = a.AccountId
-    where a.CreatedEmailAddress = 'jims@temple.edu'
-        and sq.SecurityQuestionId = 1 --In what town or city was your first full time job?
+--    update sq 
+--    	set Response = 'city'
+--    from dbo.Account a
+--    join [dbo].[SecurityQuestion] sq 
+--        on sq.AccountId = a.AccountId
+--    where a.CreatedEmailAddress = 'jims@temple.edu'
+--        and sq.SecurityQuestionId = 1 --In what town or city was your first full time job?
     
-    update sq 
-    	set Response = '1234'
-    from dbo.Account a
-    join [dbo].[SecurityQuestion] sq 
-        on sq.AccountId = a.AccountId
-    where a.CreatedEmailAddress = 'jims@temple.edu'
-        and sq.SecurityQuestionId = 2 --What were the last four digits of your childhood telephone number?
+--    update sq 
+--    	set Response = '1234'
+--    from dbo.Account a
+--    join [dbo].[SecurityQuestion] sq 
+--        on sq.AccountId = a.AccountId
+--    where a.CreatedEmailAddress = 'jims@temple.edu'
+--        and sq.SecurityQuestionId = 2 --What were the last four digits of your childhood telephone number?
     
-    update sq 
-    	set Response = 'school'
-    from dbo.Account a
-    join [dbo].[SecurityQuestion] sq 
-        on sq.AccountId = a.AccountId
-    where a.CreatedEmailAddress = 'jims@temple.edu'
-        and sq.SecurityQuestionId = 3 --What primary school did you attend?
+--    update sq 
+--    	set Response = 'school'
+--    from dbo.Account a
+--    join [dbo].[SecurityQuestion] sq 
+--        on sq.AccountId = a.AccountId
+--    where a.CreatedEmailAddress = 'jims@temple.edu'
+--        and sq.SecurityQuestionId = 3 --What primary school did you attend?
     
 
 
