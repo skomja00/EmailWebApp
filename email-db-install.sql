@@ -15,9 +15,9 @@ GO
     skomja00 - 2024-07-05 - refactor dbo.Account_Insert_SP
                                      dbo.Account_Security_Questions_SP 
                                      dbo.Account_Login_SP
-
-                            TODO: dbo.Account_Update_Password_SP
+                            
                             TODO: dbo.Email_Send_SP
+
                             TODO: dbo.Get_Email_SP (TODO: fix bug sent email returned 2x)
                             TODO: dbo.Get_Sent_Email_SP
                             TODO: dbo.Get_Email_With_Tag_SP
@@ -246,15 +246,15 @@ GO
  *    Create EmailReceipt table                          
  ***************************************************************************/
 	CREATE TABLE dbo.EmailReceipt ( 
-		EmailReceiptId BIGINT IDENTITY(1,1),
+		EmailReceiptId BIGINT IDENTITY(1,1)
+    		CONSTRAINT EmailReceipt_PK PRIMARY KEY CLUSTERED (EmailReceiptId),
 		AccountIdCreate BIGINT,
 		AccountId BIGINT,
 		EmailId BIGINT,
 		TagId BIGINT,
-		EmailFlag VARCHAR(12),
+		EmailFlag VARCHAR(12)
+            CONSTRAINT EmailFlag_DF DEFAULT ('No'),        
 		DateTimeStamp DATETIME DEFAULT GETDATE(),
-		
-		CONSTRAINT EmailReceipt_PK PRIMARY KEY CLUSTERED (EmailReceiptId),
 		
 		CONSTRAINT EmailReceipt_Tags_FK FOREIGN KEY (TagId) 
 		REFERENCES dbo.Tags(TagId),
@@ -554,8 +554,16 @@ GO
 
 	END TRY
 	BEGIN CATCH --On_Account_Update_Password_Error: 
-		RETURN -1
-	END CATCH
+        SELECT
+            -1                 AS ReturnCode
+            ,ERROR_NUMBER()    AS ErrorNumber  
+            ,ERROR_SEVERITY()  AS ErrorSeverity  
+            ,ERROR_STATE()     AS ErrorState  
+            ,ERROR_PROCEDURE() AS ErrorProcedure  
+            ,ERROR_LINE()      AS ErrorLine  
+            ,ERROR_MESSAGE()   AS ErrorMessage;  
+		RETURN -1;
+    END CATCH
 	GO	
 	SET ANSI_NULLS ON
 	GO
@@ -584,42 +592,26 @@ GO
 		@DateTimeStamp DATETIME=''
 	AS
 	BEGIN TRY
-		DECLARE @SendAccountId BIGINT
-		DECLARE @EmailId BIGINT
-		DECLARE @TagsSentId BIGINT
+		DECLARE @SendAccountId BIGINT;
+		DECLARE @EmailId       BIGINT;
+		DECLARE @SendTagId     BIGINT;
 
-		SELECT @SendAccountId = AccountId 
-			FROM dbo.Account 
-			WHERE CreatedEmailAddress = @SendEmailAddress;
-		SELECT @TagsSentId = TagId 
-			FROM dbo.Tags 
-			JOIN dbo.Account ON Account.AccountId = Tags.AccountId
-							AND Tags.TagName = 'Sent'
-			WHERE Account.AccountId = @SendAccountId;
-				
-		----do not send email unless account exists
-		--IF NOT EXISTS(SELECT *
-		--	FROM dbo.Account 
-		--	WHERE Account.CreatedEmailAddress = @RecvEmailList) 
-		--	GOTO On_Email_Send_Error
+        DROP TABLE IF EXISTS #EmailReceipt;
+        CREATE TABLE #EmailReceipt 
+            (
+                AccountId   BIGINT,
+                EmailId     BIGINT,
+                TagId       BIGINT
+            );
 
-		----do not allow email to Administrator type accounts
-		--IF EXISTS(SELECT *
-		--	FROM dbo.Account 
-		--	JOIN dbo.AccountRole on AccountRole.AccountId = Account.AccountId
-		--	WHERE Account.CreatedEmailAddress = @RecvEmailList
-		--	AND AccountRole.AccountRoleType = 'Administrator') 
-		--	GOTO On_Email_Send_Error
-
-		--create a list of recv account ids using the 
-		--semi-colon ';'separated values
-		DROP TABLE IF EXISTS #RecvEmailAccountId;
-
-		SELECT 
-			Account.AccountId
-		INTO #RecvEmailAccountId
-		FROM STRING_SPLIT(@RecvEmailList,';') AS EmailAddress
-		JOIN dbo.Account ON Account.CreatedEmailAddress = EmailAddress.value
+        SELECT 
+            @SendAccountId = acct.AccountID,
+            @SendTagId     = tags.TagId
+        FROM dbo.Account acct
+        INNER JOIN dbo.Tags tags
+            ON tags.AccountId = acct.AccountId
+                AND tags.TagName = 'Sent'                
+        WHERE acct.CreatedEmailAddress = @SendEmailAddress;
 
 		INSERT INTO dbo.Email
 				(AccountId,
@@ -634,39 +626,49 @@ GO
 
 		SET @EmailId = SCOPE_IDENTITY();
 
-		-- insert 'inbox' copy of email into the EmailReceipt table
-		-- for each receive email addesses in the ';' separated list
-		INSERT INTO EmailReceipt 
-				(AccountIdCreate,
-				AccountId,
-				EmailId,
-				TagId,
-				EmailFlag)
-			SELECT
-				@SendAccountId,
-				RecvEmail.AccountId,
-				@EmailId,
-				(SELECT TagId
-					FROM dbo.Tags 
-					WHERE Tags.AccountId = Account.AccountId
-					AND Tags.TagName = 'Inbox'),
-				'No'
-			FROM #RecvEmailAccountId RecvEmail
-			JOIN dbo.Account ON Account.AccountId = RecvEmail.AccountId
+		--only email 'User' accounts. Administrators cannot email
+        --email goes into sender's 'Sent' box. 
+        --email goes into each receivers 'Inbox'
+        INSERT INTO #EmailReceipt 
+            (
+                AccountId,
+                EmailId,
+                TagId
+            )
+		        SELECT 
+		            acct.AccountId
+                    ,@EmailId
+                    ,tags.TagId
+		        FROM STRING_SPLIT(@RecvEmailList,';') AS EmailAddress
+		        INNER JOIN dbo.Account acct
+                    ON acct.CreatedEmailAddress = EmailAddress.[value]
+                INNER JOIN dbo.AccountRole acctRole
+                    ON acctRole.AccountId = acct.AccountId
+                INNER JOIN dbo.Tags tags
+                    ON tags.AccountId = acct.AccountId
+                        AND tags.TagName = 'Inbox' 
+                WHERE acctRole.AccountRoleType = 'User'
+                
+                UNION ALL
 
-		-- insert 'sent' copy of email into the EmailReceipt 
+                SELECT 
+                    @SendAccountId,
+                    @EmailId,
+                    @SendTagId;
+
 		INSERT INTO EmailReceipt 
 				(AccountIdCreate,
 				AccountId,
 				EmailId,
-				TagId,
-				EmailFlag)
-			SELECT
-				@SendAccountId,
-				@SendAccountId,
-				@EmailId,
-				@TagsSentId,
-				'No'
+				TagId)
+           SELECT
+                @SendAccountId,
+                EmailReceipt.AccountId,
+                EmailReceipt.EmailId,
+                EmailReceipt.TagId
+           FROM #EmailReceipt AS EmailReceipt;
+
+           RETURN 1;
 
 	END TRY
 	BEGIN CATCH --On_Email_Send_Error
@@ -686,7 +688,7 @@ GO
 	GO
 	
 	CREATE PROCEDURE dbo.Get_Email_SP
-		@CreatedEmailAddress VARCHAR(254),
+		@EmailAddress VARCHAR(254),
 		@TagName VARCHAR(12)
 	AS
 	BEGIN TRY
@@ -708,7 +710,7 @@ GO
 		JOIN dbo.EmailReceipt ON EmailReceipt.AccountId = Account.AccountId
 		JOIN dbo.Email on Email.EmailId = EmailReceipt.EmailId
 		JOIN dbo.Tags ON Tags.TagId = EmailReceipt.TagId
-		WHERE Account.CreatedEmailAddress = @CreatedEmailAddress
+		WHERE Account.CreatedEmailAddress = @EmailAddress
 		-- LIKE will allow selecting using a wildcard.
 		--(ie. @TagName = '%' returns emails from for the Account in ALL folders) 
 		AND Tags.TagName LIKE @TagName;
