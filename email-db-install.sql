@@ -697,9 +697,9 @@ GO
 				Account.UserName,
 				Account.CreatedEmailAddress, 
 				--Join on the sending account id
-				Account.Avatar,
-				Account.UserName,
-				Account.CreatedEmailAddress,
+				Account.Avatar as AvatarSend,
+				Account.UserName as UserNameSend,
+				Account.CreatedEmailAddress as CreatedEmailAddressSend,
 				Email.RecvEmailList,
 				(SELECT COUNT(*) FROM STRING_SPLIT(RecvEmailList,';')) AS RecvEmailCount,
 				Email.EmailId,
@@ -1103,8 +1103,8 @@ GO
 ----/***************************************************************************
 ---- *    Send/Create some sample emails
 ---- ***************************************************************************/
---	DECLARE @GetDate DATETIME
---	SET @GetDate = GETDATE();
+	DECLARE @GetDate DATETIME
+	SET @GetDate = GETDATE();
 
 --	exec dbo.Email_Send_SP
 --	@SendEmailAddress = 'prof@temple.edu',
@@ -1120,26 +1120,26 @@ GO
 --	@EmailBody = 'Discuss .NET Core WebAPIs',
 --	@DateTimeStamp = @GetDate
 
---	exec dbo.Email_Send_SP
---	@SendEmailAddress = 'richardg@temple.edu',
---	@RecvEmailList = 'jims@temple.edu',
---	@EmailSubject='Lorem ipsum',
---	@EmailBody='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.',
---	@DateTimeStamp = @GetDate
+	exec dbo.Email_Send_SP
+	@SendEmailAddress = 'richardg@temple.edu',
+	@RecvEmailList = 'jims@temple.edu',
+	@EmailSubject='Lorem ipsum',
+	@EmailBody='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.',
+	@DateTimeStamp = @GetDate
 
---	exec dbo.Email_Send_SP
---	@SendEmailAddress='jims@temple.edu',
---	@RecvEmailList = 'brucew@temple.edu;richardg@temple.edu',
---	@EmailSubject='pellentesque',
---	@EmailBody='At tellus at urna condimentum mattis pellentesque id. Sed adipiscing diam donec adipiscing.',
---	@DateTimeStamp = @GetDate
+	exec dbo.Email_Send_SP
+	@SendEmailAddress='jims@temple.edu',
+	@RecvEmailList = 'brucew@temple.edu;richardg@temple.edu',
+	@EmailSubject='pellentesque',
+	@EmailBody='At tellus at urna condimentum mattis pellentesque id. Sed adipiscing diam donec adipiscing.',
+	@DateTimeStamp = @GetDate
 
---	exec dbo.Email_Send_SP
---	@SendEmailAddress='jims@temple.edu',
---	@RecvEmailList = 'brucew@temple.edu',
---	@EmailSubject='commodo viverra',
---	@EmailBody='Malesuada nunc vel risus commodo viverra. Habitasse platea dictumst vestibulum rhoncus.',
---	@DateTimeStamp = @GetDate
+	exec dbo.Email_Send_SP
+	@SendEmailAddress='jims@temple.edu',
+	@RecvEmailList = 'brucew@temple.edu',
+	@EmailSubject='commodo viverra',
+	@EmailBody='Malesuada nunc vel risus commodo viverra. Habitasse platea dictumst vestibulum rhoncus.',
+	@DateTimeStamp = @GetDate
 
 --    update sq 
 --    	set Response = 'city'

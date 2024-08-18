@@ -3,8 +3,12 @@
   "WorkspaceRootPath": "W:\\EmailWebApp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D8499076-FE77-4BF0-8E35-76C577DCCBE9}|CoreWebAPI\\EmailCoreWebAPI.csproj|w:\\emailwebapp\\corewebapi\\startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D8499076-FE77-4BF0-8E35-76C577DCCBE9}|CoreWebAPI\\EmailCoreWebAPI.csproj|solutionrelative:corewebapi\\startup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8A5432E8-23B2-44E7-A64C-724A5661ED42}|EmailLibrary\\EmailLibrary.csproj|W:\\EmailWebApp\\emaillibrary\\model\\email.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A5432E8-23B2-44E7-A64C-724A5661ED42}|EmailLibrary\\EmailLibrary.csproj|solutionrelative:emaillibrary\\model\\email.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB6494EA-DEF7-4F9C-9671-5BA981505014}|EmailWebApp\\EmailWebApp.csproj|w:\\emailwebapp\\emailwebapp\\accountclient.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB6494EA-DEF7-4F9C-9671-5BA981505014}|EmailWebApp\\EmailWebApp.csproj|solutionrelative:emailwebapp\\accountclient.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -19,14 +23,27 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Startup.cs",
-              "DocumentMoniker": "W:\\EmailWebApp\\CoreWebAPI\\Startup.cs",
-              "RelativeDocumentMoniker": "CoreWebAPI\\Startup.cs",
-              "ToolTip": "W:\\EmailWebApp\\CoreWebAPI\\Startup.cs",
-              "RelativeToolTip": "CoreWebAPI\\Startup.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAQwDEAAAAjAAAA",
+              "Title": "Email.cs",
+              "DocumentMoniker": "W:\\EmailWebApp\\EmailLibrary\\Model\\Email.cs",
+              "RelativeDocumentMoniker": "EmailLibrary\\Model\\Email.cs",
+              "ToolTip": "W:\\EmailWebApp\\EmailLibrary\\Model\\Email.cs",
+              "RelativeToolTip": "EmailLibrary\\Model\\Email.cs",
+              "ViewState": "AQIAABEAAAAAAAAAAAASwCAAAAAXAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-23T14:50:07.751Z",
+              "WhenOpened": "2024-07-06T18:13:20.659Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AccountClient.aspx.cs",
+              "DocumentMoniker": "W:\\EmailWebApp\\EmailWebApp\\AccountClient.aspx.cs",
+              "RelativeDocumentMoniker": "EmailWebApp\\AccountClient.aspx.cs",
+              "ToolTip": "W:\\EmailWebApp\\EmailWebApp\\AccountClient.aspx.cs",
+              "RelativeToolTip": "EmailWebApp\\AccountClient.aspx.cs",
+              "ViewState": "AQIAAB8AAAAAAAAAAAAmwEkAAAAQAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-06T17:51:22.892Z",
               "EditorCaption": ""
             }
           ]

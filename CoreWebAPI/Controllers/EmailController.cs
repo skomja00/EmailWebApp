@@ -42,15 +42,15 @@ namespace EmailCoreWebAPI.Controllers
         //GET api/Email/GetEmail/
         [HttpGet("GetEmail")]
         [Produces("application/json")]
-        public DataSet GetEmail([FromQuery]string sendEmailAddress, [FromQuery]string tagName)
+        public DataSet GetEmail([FromQuery]string EmailAddress, [FromQuery]string tagName)
         {
             SqlCommand objSqlCmd = new SqlCommand();
             objSqlCmd.CommandType = CommandType.StoredProcedure;
             objSqlCmd.CommandText = "Get_Email_SP";
 
-            SqlParameter emailAddressParm = new SqlParameter("@CreatedEmailAddress", SqlDbType.VarChar);
+            SqlParameter emailAddressParm = new SqlParameter("@EmailAddress", SqlDbType.VarChar);
             emailAddressParm.Direction = ParameterDirection.Input;
-            emailAddressParm.Value = sendEmailAddress;
+            emailAddressParm.Value = EmailAddress;
             emailAddressParm.Size = 254;
             objSqlCmd.Parameters.Add(emailAddressParm);
 

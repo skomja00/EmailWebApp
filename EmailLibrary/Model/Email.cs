@@ -45,7 +45,7 @@ namespace EmailLibrary.Model
         /// <returns>DataSet</returns>
         public DataSet GetEmail(string theCreatedEmailAddress, string theTagName)
         {
-            WebRequest request = WebRequest.Create(baseUrl + "/Email/GetEmail?sendEmailAddress=" + theCreatedEmailAddress + "&tagName=" + theTagName);
+            WebRequest request = WebRequest.Create(baseUrl + "/Email/GetEmail?EmailAddress=" + theCreatedEmailAddress + "&tagName=" + theTagName);
             WebResponse response = request.GetResponse();
             Stream stream = response.GetResponseStream();
             StreamReader reader = new StreamReader(stream);

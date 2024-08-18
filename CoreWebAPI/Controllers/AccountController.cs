@@ -59,6 +59,9 @@ namespace EmailCoreWebAPI.Controllers
                 acct.Active = objDB.GetField("Active", 0).ToString();
                 acct.DateTimeStamp = Convert.ToDateTime(objDB.GetField("DateTimeStamp", 0));
                 acct.AccountRoleType = objDB.GetField("AccountRoleType", 0).ToString();
+                acct.SecurityQuestionCity = objDB.GetField("SecurityQuestionCity", 0).ToString();
+                acct.SecurityQuestionPhone = objDB.GetField("SecurityQuestionPhone", 0).ToString();
+                acct.SecurityQuestionSchool = objDB.GetField("SecurityQuestionSchool", 0).ToString();
             }
 
             return acct;
