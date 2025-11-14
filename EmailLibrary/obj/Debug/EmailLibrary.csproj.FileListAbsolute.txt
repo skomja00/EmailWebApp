@@ -20,13 +20,6 @@ C:\Users\james s\Documents\Temple 3342 Server-Side-Pgm\EmailWebApp\EmailLibrary\
 W:\EmailWebApp\EmailLibrary\bin\Debug\EmailLibrary.dll.config
 W:\EmailWebApp\EmailLibrary\bin\Debug\EmailLibrary.dll
 W:\EmailWebApp\EmailLibrary\bin\Debug\EmailLibrary.pdb
-W:\EmailWebApp\EmailLibrary\bin\Debug\Newtonsoft.Json.dll
-W:\EmailWebApp\EmailLibrary\bin\Debug\Newtonsoft.Json.xml
-W:\EmailWebApp\EmailLibrary\obj\Debug\EmailLibrary.csproj.AssemblyReference.cache
-W:\EmailWebApp\EmailLibrary\obj\Debug\EmailLibrary.csproj.CoreCompileInputs.cache
-W:\EmailWebApp\EmailLibrary\obj\Debug\EmailLib.600F7167.Up2Date
-W:\EmailWebApp\EmailLibrary\obj\Debug\EmailLibrary.dll
-W:\EmailWebApp\EmailLibrary\obj\Debug\EmailLibrary.pdb
 W:\EmailWebApp\EmailLibrary\bin\Debug\Azure.Core.dll
 W:\EmailWebApp\EmailLibrary\bin\Debug\Azure.Identity.dll
 W:\EmailWebApp\EmailLibrary\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
@@ -39,6 +32,7 @@ W:\EmailWebApp\EmailLibrary\bin\Debug\Microsoft.IdentityModel.Logging.dll
 W:\EmailWebApp\EmailLibrary\bin\Debug\Microsoft.IdentityModel.Protocols.dll
 W:\EmailWebApp\EmailLibrary\bin\Debug\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 W:\EmailWebApp\EmailLibrary\bin\Debug\Microsoft.IdentityModel.Tokens.dll
+W:\EmailWebApp\EmailLibrary\bin\Debug\Newtonsoft.Json.dll
 W:\EmailWebApp\EmailLibrary\bin\Debug\System.Buffers.dll
 W:\EmailWebApp\EmailLibrary\bin\Debug\System.Configuration.ConfigurationManager.dll
 W:\EmailWebApp\EmailLibrary\bin\Debug\System.Diagnostics.DiagnosticSource.dll
@@ -68,6 +62,7 @@ W:\EmailWebApp\EmailLibrary\bin\Debug\Microsoft.IdentityModel.Logging.xml
 W:\EmailWebApp\EmailLibrary\bin\Debug\Microsoft.IdentityModel.Protocols.xml
 W:\EmailWebApp\EmailLibrary\bin\Debug\Microsoft.IdentityModel.Protocols.OpenIdConnect.xml
 W:\EmailWebApp\EmailLibrary\bin\Debug\Microsoft.IdentityModel.Tokens.xml
+W:\EmailWebApp\EmailLibrary\bin\Debug\Newtonsoft.Json.xml
 W:\EmailWebApp\EmailLibrary\bin\Debug\System.Buffers.xml
 W:\EmailWebApp\EmailLibrary\bin\Debug\System.Configuration.ConfigurationManager.xml
 W:\EmailWebApp\EmailLibrary\bin\Debug\System.Diagnostics.DiagnosticSource.xml
@@ -95,3 +90,8 @@ W:\EmailWebApp\EmailLibrary\bin\Debug\pt-BR\Microsoft.Data.SqlClient.resources.d
 W:\EmailWebApp\EmailLibrary\bin\Debug\ru\Microsoft.Data.SqlClient.resources.dll
 W:\EmailWebApp\EmailLibrary\bin\Debug\zh-Hans\Microsoft.Data.SqlClient.resources.dll
 W:\EmailWebApp\EmailLibrary\bin\Debug\zh-Hant\Microsoft.Data.SqlClient.resources.dll
+W:\EmailWebApp\EmailLibrary\obj\Debug\EmailLibrary.csproj.AssemblyReference.cache
+W:\EmailWebApp\EmailLibrary\obj\Debug\EmailLibrary.csproj.CoreCompileInputs.cache
+W:\EmailWebApp\EmailLibrary\obj\Debug\EmailLib.600F7167.Up2Date
+W:\EmailWebApp\EmailLibrary\obj\Debug\EmailLibrary.dll
+W:\EmailWebApp\EmailLibrary\obj\Debug\EmailLibrary.pdb

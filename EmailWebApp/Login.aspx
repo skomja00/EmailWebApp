@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="EmailWebApp.Login" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="EmailWebApp.Login" %>
 
 <%@ Register src="ModalUserControl.ascx" TagName="ModalControl" TagPrefix="mc"%>
 
