@@ -54,20 +54,28 @@ namespace EmailWebApp
         /// </summary>
         protected void btnLogin_Click(object sender, EventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine($"[LOGIN_ASPX] btnLogin_Click invoked at {DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}");
+            System.Diagnostics.Debug.WriteLine($"[LOGIN_ASPX] Email: {txtEmail.Text}");
             if (txtEmail.Text != null && txtPass.Text != null)
             {
                 Account account = new Account();
                 account.AccountPassword = Account.Encrypt(txtPass.Text);
                 account.CreatedEmailAddress = txtEmail.Text;
+                System.Diagnostics.Debug.WriteLine($"[LOGIN_ASPX] Encrypted password and calling account.LogIn()");
                 int loginReturnCode = account.LogIn();
+                System.Diagnostics.Debug.WriteLine($"[LOGIN_ASPX] account.LogIn() returned: {loginReturnCode}");
+                System.Diagnostics.Debug.WriteLine($"[LOGIN_ASPX] account.LogIn() returned: {loginReturnCode}");
                 if (loginReturnCode == 1)
                 {
+                    System.Diagnostics.Debug.WriteLine($"[LOGIN_ASPX] Login successful. AccountId={account.AccountId}, RoleType={account.AccountRoleType}");
                     if (account.Active == "no")
                     {
+                        System.Diagnostics.Debug.WriteLine($"[LOGIN_ASPX] Account is banned.");
                         Response.Write("<script>alert('Your account is banned. Please contact the administrator.')</script>");
                     }
                     else
                     {
+                        System.Diagnostics.Debug.WriteLine($"[LOGIN_ASPX] Account is active. Updating session and redirecting.");
                         UpdateSession(account);
                         if (chkRemember.Checked)
                         {
@@ -86,6 +94,7 @@ namespace EmailWebApp
                 }
                 else
                 {
+                    System.Diagnostics.Debug.WriteLine($"[LOGIN_ASPX] Login failed. Return code: {loginReturnCode}");
                     Response.Write("<script>alert('Login failed. Please check your credentials.')</script>");
                 }
             }

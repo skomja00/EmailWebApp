@@ -3,12 +3,22 @@
     // Hover to view descriptions of existing attributes.
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
-    "configurations": [
+  "configurations": [
         {
-            "type": "chrome",
+            "name": "Launch IIS Express",
+            "type": "clr", // Or "coreclr" for .NET Core/.NET 5+
             "request": "launch",
-            "name": "Open Login.aspx",
-            "file": "w:\\EmailWebApp\\EmailWebApp\\Login.aspx"
+            "program": "C:\\Program Files\\IIS Express\\iisexpress.exe", // Path to 64-bit IIS Express
+            "args": [
+                "/config:\"${workspaceFolder}\\.vs\\config\\applicationhost.config\"", // Path to your applicationhost.config
+                "/site:YourProjectName" // Replace with your actual project name
+            ],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development" // If applicable for ASP.NET Core
+            }
         }
-    ]
+      ]
 }

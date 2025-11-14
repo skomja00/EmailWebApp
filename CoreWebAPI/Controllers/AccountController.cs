@@ -25,6 +25,8 @@ namespace EmailCoreWebAPI.Controllers
         [Produces("application/json")]
         public Account LogIn([FromBody] Account theAccount)
         {
+            System.Diagnostics.Debug.WriteLine($"[ACCOUNT_CONTROLLER] LogIn POST invoked at {DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}");
+            System.Diagnostics.Debug.WriteLine($"[ACCOUNT_CONTROLLER] Email: {theAccount.CreatedEmailAddress}");
             Account acct = new Account();
             SqlCommand objSqlCommand = new SqlCommand();
             objSqlCommand.CommandType = CommandType.StoredProcedure;
@@ -45,9 +47,11 @@ namespace EmailCoreWebAPI.Controllers
             DataSet objDS = objDB.GetDataSetUsingCmdObj(objSqlCommand);
 
             int rowCount = objDS.Tables[0].Rows.Count;
+            // System.Diagnostics.Debug.WriteLine($"[ACCOUNT_CONTROLLER] SP returned {rowCount} rows");
 
             if (rowCount > 0)
             {
+                // System.Diagnostics.Debug.WriteLine($"[ACCOUNT_CONTROLLER] Login successful. Populating account object.");
                 acct.AccountId = Convert.ToInt32(objDB.GetField("AccountId", 0));
                 acct.UserName = objDB.GetField("UserName", 0).ToString();
                 acct.UserAddress = objDB.GetField("UserAddress", 0).ToString();
@@ -62,7 +66,12 @@ namespace EmailCoreWebAPI.Controllers
                 acct.SecurityQuestionCity = objDB.GetField("SecurityQuestionCity", 0).ToString();
                 acct.SecurityQuestionPhone = objDB.GetField("SecurityQuestionPhone", 0).ToString();
                 acct.SecurityQuestionSchool = objDB.GetField("SecurityQuestionSchool", 0).ToString();
+                // System.Diagnostics.Debug.WriteLine($"[ACCOUNT_CONTROLLER] Account populated: AccountId={acct.AccountId}, RoleType={acct.AccountRoleType}");
             }
+            // else
+            // {
+            //     // System.Diagnostics.Debug.WriteLine($"[ACCOUNT_CONTROLLER] Login failed: No matching account found");
+            // }
 
             return acct;
 
