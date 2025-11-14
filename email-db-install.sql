@@ -15,10 +15,8 @@ GO
     skomja00 - 2024-07-05 - refactor dbo.Account_Insert_SP
                                      dbo.Account_Security_Questions_SP 
                                      dbo.Account_Login_SP
-                            
-                            TODO: dbo.Email_Send_SP
-
-                            TODO: dbo.Get_Email_SP (TODO: fix bug sent email returned 2x)
+                                     dbo.Email_Send_SP
+                                     dbo.Get_Email_SP (TODO: fix bug sent email returned 2x)
                             TODO: dbo.Get_Sent_Email_SP
                             TODO: dbo.Get_Email_With_Tag_SP
                             TODO: dbo.Get_Accounts_With_Flagged_Email_SP
@@ -671,9 +669,17 @@ GO
            RETURN 1;
 
 	END TRY
-	BEGIN CATCH --On_Email_Send_Error
-		RETURN -1
-	END CATCH 
+	BEGIN CATCH --Email_Send_SP_Error: 
+        SELECT
+            -1                 AS ReturnCode
+            ,ERROR_NUMBER()    AS ErrorNumber  
+            ,ERROR_SEVERITY()  AS ErrorSeverity  
+            ,ERROR_STATE()     AS ErrorState  
+            ,ERROR_PROCEDURE() AS ErrorProcedure  
+            ,ERROR_LINE()      AS ErrorLine  
+            ,ERROR_MESSAGE()   AS ErrorMessage;  
+		RETURN -1;
+    END CATCH 
 	GO	
 /***************************************************************************
  *    Description: Procedure to SELECT emails for the 
@@ -719,10 +725,16 @@ GO
 
 	END TRY
 	BEGIN CATCH
-
+        SELECT
+            -1                 AS ReturnCode
+            ,ERROR_NUMBER()    AS ErrorNumber  
+            ,ERROR_SEVERITY()  AS ErrorSeverity  
+            ,ERROR_STATE()     AS ErrorState  
+            ,ERROR_PROCEDURE() AS ErrorProcedure  
+            ,ERROR_LINE()      AS ErrorLine  
+            ,ERROR_MESSAGE()   AS ErrorMessage;  
 		RETURN -1;
-
-	END CATCH
+    END CATCH 
 
 	GO
 /***************************************************************************
@@ -770,11 +782,17 @@ GO
 		RETURN 1;
 
 	END TRY
-	BEGIN CATCH
-
+	BEGIN CATCH --Get_Sent_Email_SP_Error: 
+        SELECT
+            -1                 AS ReturnCode
+            ,ERROR_NUMBER()    AS ErrorNumber  
+            ,ERROR_SEVERITY()  AS ErrorSeverity  
+            ,ERROR_STATE()     AS ErrorState  
+            ,ERROR_PROCEDURE() AS ErrorProcedure  
+            ,ERROR_LINE()      AS ErrorLine  
+            ,ERROR_MESSAGE()   AS ErrorMessage;  
 		RETURN -1;
-
-	END CATCH
+    END CATCH 
 	GO
 /***************************************************************************
  *    Description: Procedure to SELECT sent emails with
@@ -809,11 +827,17 @@ GO
 		RETURN 1;
 
 	END TRY
-	BEGIN CATCH
-
+	BEGIN CATCH --Get_Email_With_Tag_SP_Error: 
+        SELECT
+            -1                 AS ReturnCode
+            ,ERROR_NUMBER()    AS ErrorNumber  
+            ,ERROR_SEVERITY()  AS ErrorSeverity  
+            ,ERROR_STATE()     AS ErrorState  
+            ,ERROR_PROCEDURE() AS ErrorProcedure  
+            ,ERROR_LINE()      AS ErrorLine  
+            ,ERROR_MESSAGE()   AS ErrorMessage;  
 		RETURN -1;
-
-	END CATCH
+    END CATCH 
 	GO
 /***************************************************************************
  *    Description: Procedure to SELECT all emails for all Accounts

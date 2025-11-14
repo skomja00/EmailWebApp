@@ -60,7 +60,6 @@ C:\Users\james s\Documents\Temple 3342 Server-Side-Pgm\EmailWebApp\EmailWebApp\o
 C:\Users\james s\Documents\Temple 3342 Server-Side-Pgm\EmailWebApp\EmailWebApp\obj\Debug\EmailWebApp.csproj.CopyComplete
 C:\Users\james s\Documents\Temple 3342 Server-Side-Pgm\EmailWebApp\EmailWebApp\obj\Debug\EmailWebApp.dll
 C:\Users\james s\Documents\Temple 3342 Server-Side-Pgm\EmailWebApp\EmailWebApp\obj\Debug\EmailWebApp.pdb
-W:\EmailWebApp\EmailWebApp\bin\EmailWebApp.dll.config
 W:\EmailWebApp\EmailWebApp\bin\EmailWebApp.xml
 W:\EmailWebApp\EmailWebApp\bin\EmailWebApp.dll
 W:\EmailWebApp\EmailWebApp\bin\EmailWebApp.pdb

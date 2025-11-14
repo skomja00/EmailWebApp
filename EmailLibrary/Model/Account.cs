@@ -8,9 +8,8 @@ using System.Data;
 using Microsoft.Data.SqlClient;
 using System.Security.Cryptography;
 using System.IO;
-using Newtonsoft.Json;
 using System.Net;
-using EmailLibrary.AccountService;
+using Newtonsoft.Json;
 
 namespace EmailLibrary.Model
 {
